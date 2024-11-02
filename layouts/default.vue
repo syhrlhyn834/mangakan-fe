@@ -1,14 +1,6 @@
 <template>
   <div>
-    <!-- navbar -->
-    <Navbar />
-    <div class="mt-20 sm:mb-0 mb-22">
-      <!-- content -->
       <Nuxt />
-    </div>
-
-    <!-- footer -->
-    <Footer />
   </div>
 </template>
 
