@@ -1,14 +1,12 @@
 <template>
   <div class="relative">
-    <!-- Sidebar dengan Transition untuk efek slide -->
     <transition name="slide-fade">
-      <div v-if="isSidebarOpen" class="w-full md:w-64 bg-[#2d2d2c] h-auto md:h-screen shadow-md hidden md:block">
+      <div v-if="isSidebarOpen" class="w-full md:w-64 bg-[#2d2d2c] h-auto md:h-screen shadow-md hidden md:block fixed top-0 left-0 z-10">
         <div class="p-4 flex items-center justify-between">
           <div class="flex items-center">
             <img alt="MangaDex Logo" class="w-10 h-10" src="https://storage.googleapis.com/a1aa/image/w0Di61ixga6NIht03hfB3mc9oODsKPvulltsfXlANn7rPStTA.jpg" />
             <span class="ml-2 text-xl font-bold text-white">MangaDex</span>
           </div>
-          <!-- Tombol X untuk menutup sidebar -->
           <button @click="$emit('toggle-sidebar')" class="text-2xl text-white">
             <i class="fas fa-times"></i>
           </button>
@@ -23,7 +21,7 @@
                 Types <i :class="submenuIconClass" class="ml-2 submenu-icon"></i>
               </span>
               <transition name="fade-slide">
-                <ul v-show="isTypesOpen" class="transition-all duration-300 ease-in-out">
+                <ul v-if="isTypesOpen" class="transition-all duration-300 ease-in-out">
                   <li class="mb-2"><nuxt-link class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="#">Doujinshi</nuxt-link></li>
                   <li class="mb-2"><nuxt-link class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="#">Manga</nuxt-link></li>
                   <li class="mb-2"><nuxt-link class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="#">Manhwa</nuxt-link></li>
@@ -59,7 +57,7 @@ export default {
   },
   data() {
     return {
-      isTypesOpen: false, // Untuk submenu Types
+      isTypesOpen: false,
     };
   },
   computed: {
@@ -76,15 +74,21 @@ export default {
 </script>
 
 <style scoped>
-/* Animasi untuk efek fade dan slide */
 .slide-fade-enter-active {
   transition: all 0.3s ease;
 }
 .slide-fade-leave-active {
   transition: all 0.3s ease;
 }
-.slide-fade-enter, .slide-fade-leave-to /* slide-fade-leave-active diakhiri */ {
+.slide-fade-enter, .slide-fade-leave-to {
   transform: translateX(-100%);
   opacity: 0;
+}
+.fade-slide-enter-active, .fade-slide-leave-active {
+  transition: all 0.3s ease;
+}
+.fade-slide-enter, .fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 </style>
