@@ -1,9 +1,9 @@
 <template>
 <div>
-  <div class="bg-[#191b1d] text-white">
-<div v-for="(footer, index) in footers" :key="`footer-copyright-${footer.id}-${index}`">{{ footer.copyright }}
-
-</div>
+<div class="absolute bottom-0 w-full p-4 text-gray-500 text-sm">
+  <div class="flex items-center">
+    <span class="text-white" v-for="(footer, index) in footers" :key="`footer-copyright-${footer.id}-${index}`"><i class="fa fa-copyright text-white" aria-hidden="true"></i> {{ footer.copyright }}</span>
+  </div>
 </div>
 </div>
 </template>

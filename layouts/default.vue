@@ -1,25 +1,41 @@
 <template>
-  <div>
+  <div class="flex flex-col md:flex-row bg-[#191b1d] h-screen overflow-hidden">
+    <!-- Sidebar Komponen (Hanya Desktop) -->
+    <SidebarNavbar :isSidebarOpen="isSidebarOpen" @toggle-sidebar="toggleSidebar" />
+
+    <!-- Konten Utama dengan Scroll -->
+    <div class="flex-1 h-screen overflow-y-auto">
+      <!-- Navbar Komponen (Mobile/Desktop) -->
+      <Navbar :isSidebarOpen="isSidebarOpen" @toggle-sidebar="toggleSidebar" />
+      <div class="mb-4">
       <Nuxt />
+    </div>
+    </div>
   </div>
 </template>
 
+
+
 <script>
-import Navbar from '@/components/Navbar.vue'
-import Footer from '@/components/Footer.vue'
+import SidebarNavbar from '~/components/SidebarNavbar.vue';
+import Navbar from '~/components/Navbar.vue';
 
 export default {
   components: {
+    SidebarNavbar,
     Navbar,
-    Footer,
   },
-
   data() {
     return {
+      isSidebarOpen: true, // Default terbuka untuk desktop
       headerMedia: null,
     };
   },
-
+  methods: {
+    toggleSidebar() {
+      this.isSidebarOpen = !this.isSidebarOpen;
+    },
+  },
   async fetch() {
     try {
       const response = await this.$axios.get('/api/web/headers');
@@ -28,7 +44,6 @@ export default {
       console.error('Error fetching header:', error);
     }
   },
-
   head() {
     const headerTitle = this.headerMedia?.data?.[0]?.title || 'Manga';
     return {
@@ -40,5 +55,5 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 </style>
