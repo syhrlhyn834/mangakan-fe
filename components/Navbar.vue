@@ -13,7 +13,7 @@
         <i class="fas fa-bars"></i>
       </button>
       <!-- Tombol Hamburger untuk mobile -->
-      <button @click="toggleMenu" class="mr-2 text-lg lg:hidden">
+      <button @click="toggleMenu" class="mr-2 text-lg md:hidden">
         <i class="fas fa-bars"></i>
       </button>
       <div class="relative w-full">

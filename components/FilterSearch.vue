@@ -1,18 +1,25 @@
 <template>
   <div class="container">
     <div class="bg-[#2d2d2c] p-4 rounded-lg">
+      <!-- Filter Title -->
       <div class="mb-4">
         <label for="title" class="block text-sm font-medium text-white">Title</label>
         <input type="text" id="title" class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-[#ff6740] focus:border-[#ff6740] sm:text-sm text-white">
       </div>
+
+      <!-- Filter Author -->
       <div class="mb-4">
         <label for="author" class="block text-sm font-medium text-white">Author</label>
         <input type="text" id="author" class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-[#ff6740] focus:border-[#ff6740] sm:text-sm text-white">
       </div>
+
+      <!-- Filter Character -->
       <div class="mb-4">
         <label for="character" class="block text-sm font-medium text-white">Character</label>
         <input type="text" id="character" class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-[#ff6740] focus:border-[#ff6740] sm:text-sm text-white">
       </div>
+
+      <!-- Status Filter -->
       <div class="mb-4">
         <span class="block text-sm font-medium text-white">Status</span>
         <div class="mt-2 space-x-4">
@@ -30,6 +37,9 @@
           </label>
         </div>
       </div>
+
+
+      <!-- Type Filter -->
       <div class="mb-4">
         <span class="block text-sm font-medium text-white">Type</span>
         <div class="mt-2 space-x-4">
@@ -51,6 +61,8 @@
           </label>
         </div>
       </div>
+
+      <!-- Order By Filter -->
       <div class="mb-4">
         <span class="block text-sm font-medium text-white">Order By</span>
         <div class="mt-2 space-x-4">
@@ -72,18 +84,20 @@
           </label>
         </div>
       </div>
+
+      <!-- Genre Filter -->
       <div class="mb-4">
         <span class="block text-sm font-medium text-white">Genre</span>
         <div class="mt-2 h-48 overflow-y-scroll grid grid-cols-2 md:grid-cols-5 gap-6 text-sm text-gray-400">
           <div v-for="(genre, index) in genres" :key="index" class="flex items-center">
             <input type="checkbox" :id="'genre-' + index" :value="genre" v-model="selectedGenre" class="form-checkbox h-3 w-3 text-[#ff6740] rounded-full border-gray-600 focus:ring-[#ff6740]">
-            <label :for="'genre-' + index" class="ml-2">{{ genre }}</label>
+            <label :for="'genre-' + index" class="ml-2">{{ genre.name }}</label>
           </div>
         </div>
       </div>
 
       <div class="flex justify-center">
-        <button class="bg-[#ff6740] text-white px-4 py-2 rounded-md">Search</button>
+        <button @click="emitSearch" class="bg-[#ff6740] text-white px-4 py-2 rounded-md">Search</button>
       </div>
     </div>
   </div>
@@ -93,22 +107,25 @@
 export default {
   data() {
     return {
-      genres: [
-        'Age Progression', 'Anal', 'Bald', 'Bike Shorts', 'Blindfold',
-        'Bondage', 'Cousin', 'Defloration', 'Double Penetration', 'Exhibitionism',
-        'Femdom', 'Futanari', 'Gangbang', 'Glasses', 'Group',
-        'Handjob', 'Harem', 'Incest', 'Inflation', 'Interracial',
-        'Age Regression', 'Apron', 'Big Ass', 'Birth', 'Blowjob',
-        'Cheating', 'Cunnilingus', 'Demon Girl', 'Drunk', 'Females Only',
-        'Footjob', 'Furry', 'Gokkun', 'Gore', 'Horror',
-        'Hypnosis', 'Impregnation', 'Insect', 'Latex',
-        'All The Way Through', 'Amputee', 'Aunt', 'Big Penis', 'Blackmail',
-        'Bodysuit', 'Condom', 'Daughter', 'DILF', 'Emotionless Sex',
-        'Lesbian', 'Loli', 'Mind Break', 'Mind Control', 'Monster',
-        'Netorare', 'Netori', 'Nipple Torture', 'Orgy', 'Pregnant'
-      ],
-      selectedGenre: [] // Store selected genres
+      genres: [],
+      authors: [],
+      types: [],
+      selectedGenre: [], // Store selected genres
     };
+  },
+  async mounted() {
+    // Fetch data from API
+    try {
+      const genreResponse = await this.$axios.get('/api/web/genres');
+      const authorResponse = await this.$axios.get('/api/web/authors');
+      const typeResponse = await this.$axios.get('/api/web/types');
+
+      this.genres = genreResponse.data.data;
+      this.authors = authorResponse.data.data;
+      this.types = typeResponse.data.data;
+    } catch (error) {
+      console.error('Error fetching filter data:', error);
+    }
   }
 };
 </script>
