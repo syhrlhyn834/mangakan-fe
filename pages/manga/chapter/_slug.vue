@@ -7,14 +7,14 @@
         <button
           @click="setMode('single')"
           class="px-3 py-1 rounded-md transition-colors"
-          :class="mode === 'single' ? 'bg-blue-500 text-white' : 'bg-gray-700 hover:bg-gray-600'"
+          :class="mode === 'single' ? 'bg-[#ff6740] text-white' : 'bg-gray-700 hover:bg-gray-600'"
         >
           Single Page
         </button>
         <button
           @click="setMode('vertical')"
           class="px-3 py-1 rounded-md transition-colors"
-          :class="mode === 'vertical' ? 'bg-blue-500 text-white' : 'bg-gray-700 hover:bg-gray-600'"
+          :class="mode === 'vertical' ? 'bg-[#ff6740] text-white' : 'bg-gray-700 hover:bg-gray-600'"
         >
           Vertical Scroll
         </button>
