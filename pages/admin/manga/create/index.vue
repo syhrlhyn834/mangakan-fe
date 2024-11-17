@@ -71,7 +71,7 @@
             required
           >
             <option value="" disabled>Pilih Status</option>
-            <option value="Published">Published</option>
+            <option value="Publishing">Publishing</option>
             <option value="Finished">Finished</option>
           </select>
           <p v-if="validation.status" class="text-red-500 text-sm mt-1">{{ validation.status[0] }}</p>

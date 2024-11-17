@@ -4,17 +4,8 @@
   <div class="bg-[#191b1d] min-h-screen flex flex-col">
     <div class="px-4 mb-2 flex-grow">
       <div class="bg-[#ff6740] text-white p-1 md:p-1.5 rounded mb-2 flex justify-between items-center">
-        <h2 class="text-xl font-bold"><i class="fas fa-folder-open mr-1"></i> DAFTAR SEMUA</h2>
-        <a
-          href="#"
-          class="bg-white text-[#ff6740] font-semibold text-xs md:text-sm py-1 px-4 rounded transition-all duration-300 ease-in-out transform hover:bg-[#ff9a70] hover:text-white hover:scale-105 hover:shadow-md"
-          @click.prevent="toggleFilterSearch"
-        >
-          Filter Search
-        </a>
+        <h2 class="text-xl font-bold"><i class="fas fa-folder-open mr-1"></i> Status: Publishing Upload Terbaru</h2>
       </div>
-
-      <FilterSearch v-if="showFilterSearch" />
 
       <div class="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         <div v-for="manga in mangas" :key="manga.id" class="flex flex-col items-start">
@@ -82,18 +73,13 @@
   </div>
 </template>
 <script>
-  import FilterSearch from '@/components/FilterSearch.vue'; // Pastikan path ini sesuai dengan lokasi komponen Anda
 export default {
   name: 'All',
-  components: {
-    FilterSearch,
-  },
   data() {
     return {
       mangas: [],
       currentPage: 1,
       totalPages: null,
-      showFilterSearch: false,
     };
   },
   computed: {
@@ -104,7 +90,7 @@ export default {
   methods: {
     async fetchMangas(page) {
       try {
-        const response = await this.$axios.get(`/api/web/mangas?page=${page}`);
+        const response = await this.$axios.get(`/api/web/mangaPublishing?page=${page}`);
         this.mangas = response.data.data.data;
         this.currentPage = response.data.data.current_page;  // Perbaikan di sini
         this.totalPages = response.data.data.last_page;      // Perbaikan di sini
@@ -141,9 +127,6 @@ export default {
 
   return pages;
 },
-    toggleFilterSearch() {
-      this.showFilterSearch = !this.showFilterSearch;
-    },
     changePage(page) {
       this.$router.push({ query: { ...this.$route.query, pageManga: page } });
       this.fetchMangas(page);  // Memanggil method dengan nama yang sesuai

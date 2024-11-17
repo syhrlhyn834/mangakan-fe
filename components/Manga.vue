@@ -4,9 +4,12 @@
     <div class="px-4 mb-2">
       <div class="bg-[#ff6740] text-white p-1 md:p-1.5 rounded mb-2 flex justify-between items-center">
         <h2 class="text-xl font-bold"><i class="fas fa-folder-open mr-1"></i> DOUJINSHI & MANGA</h2>
-        <a href="#" class="bg-white text-[#ff6740] font-semibold text-xs md:text-sm py-1 px-4 rounded transition-all duration-300 ease-in-out transform hover:bg-[#ff9a70] hover:text-white hover:scale-105 hover:shadow-md">
-          Lihat Semua
-        </a>
+        <NuxtLink
+    to="/doujinmanga"
+    class="bg-white text-[#ff6740] font-semibold text-xs md:text-sm py-1 px-4 rounded transition-all duration-300 ease-in-out transform hover:bg-[#ff9a70] hover:text-white hover:scale-105 hover:shadow-md"
+  >
+    Lihat Semua
+  </NuxtLink>
       </div>
       <div class="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         <div v-for="manga in mangas" :key="manga.id" class="flex flex-col items-start">
@@ -20,7 +23,10 @@
             <span class="absolute bottom-3 right-3 bg-blue-600 text-sm text-white font-bold px-3 py-1 rounded">{{ manga.type.name }}</span>
           </div>
           <div class="w-full mt-3">
-            <h3 class="text-lg text-white font-semibold truncate">{{ manga.title }}</h3>
+            <nuxt-link :to="{name: 'manga-slug', params: {slug: manga.slug}}" class="text-lg text-white font-semibold truncate">
+              {{ manga.title }}
+            </nuxt-link>
+
             <div class="flex items-center justify-between text-sm mt-2 text-gray-400">
               <span>Chapter {{ manga.chapters.length }}</span>
               <span class="text-right">{{ manga.status }}</span>
@@ -73,9 +79,12 @@
     <div class="px-4 mb-2">
       <div class="bg-[#ff6740] text-white p-1 md:p-1.5 rounded mb-2 flex justify-between items-center">
         <h2 class="text-xl font-bold"><i class="fas fa-folder-open mr-1"></i> MANHWA</h2>
-        <a href="#" class="bg-white text-[#ff6740] font-semibold text-xs md:text-sm py-1 px-4 rounded transition-all duration-300 ease-in-out transform hover:bg-[#ff9a70] hover:text-white hover:scale-105 hover:shadow-md">
-          Lihat Semua
-        </a>
+        <NuxtLink
+    to="/manhwa"
+    class="bg-white text-[#ff6740] font-semibold text-xs md:text-sm py-1 px-4 rounded transition-all duration-300 ease-in-out transform hover:bg-[#ff9a70] hover:text-white hover:scale-105 hover:shadow-md"
+  >
+    Lihat Semua
+  </NuxtLink>
       </div>
       <div class="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         <div v-for="manhwa in manhwas" :key="manhwa.id" class="flex flex-col items-start">
@@ -89,7 +98,9 @@
             <span class="absolute bottom-3 right-3 bg-blue-600 text-sm text-white font-bold px-3 py-1 rounded">{{ manhwa.type.name }}</span>
           </div>
           <div class="w-full mt-3">
-            <h3 class="text-lg text-white font-semibold truncate">{{ manhwa.title }}</h3>
+            <nuxt-link :to="{name: 'manga-slug', params: {slug: manhwa.slug}}" class="text-lg text-white font-semibold truncate">
+              {{ manhwa.title }}
+            </nuxt-link>
             <div class="flex items-center justify-between text-sm mt-2 text-gray-400">
               <span>Chapter {{ manhwa.chapters.length }}</span>
               <span class="text-right">{{ manhwa.status }}</span>

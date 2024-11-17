@@ -6,7 +6,7 @@
         <!-- Header Section -->
         <div class="bg-[#ff6740] text-white p-1 md:p-1.5 rounded mb-2 flex items-center">
           <h2 class="text-lg font-semibold">
-            <i class="fas fa-folder-open mr-1"></i> Genres
+            <i class="fas fa-folder-open mr-1"></i> Series
           </h2>
         </div>
 
@@ -20,7 +20,7 @@
               class="flex rounded overflow-hidden text-sm"
             >
               <div class="flex-1 bg-gray-800 p-2">
-                <nuxt-link :to="{name: 'genre-slug', params: {slug: genre.slug}}" class="text-lg text-white font-semibold truncate">
+                <nuxt-link :to="{name: 'series-slug', params: {slug: genre.slug}}" class="text-lg text-white font-semibold truncate">
                   {{ genre.name }}
                 </nuxt-link>
               </div>
@@ -40,7 +40,7 @@
 export default {
   async asyncData({ $axios }) {
     try {
-      const response = await $axios.get('/api/web/genres');
+      const response = await $axios.get('/api/web/series');
       const genres = response.data.data
         .map((genre) => ({
           ...genre,

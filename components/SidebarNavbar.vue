@@ -22,17 +22,17 @@
               </span>
               <transition name="fade-slide">
                 <ul v-if="isTypesOpen" class="transition-all duration-300 ease-in-out">
-                  <li class="mb-2"><nuxt-link class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="#">Doujinshi</nuxt-link></li>
-                  <li class="mb-2"><nuxt-link class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="#">Manga</nuxt-link></li>
-                  <li class="mb-2"><nuxt-link class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="#">Manhwa</nuxt-link></li>
+                  <li class="mb-2"><nuxt-link class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="/types/doujinshi">Doujinshi</nuxt-link></li>
+                  <li class="mb-2"><nuxt-link class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="/types/manga">Manga</nuxt-link></li>
+                  <li class="mb-2"><nuxt-link class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="/types/manhwa">Manhwa</nuxt-link></li>
                 </ul>
               </transition>
             </li>
-            <li class="mb-4"><nuxt-link class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="#"><i class="fas fa-tags mr-2"></i> Genres</nuxt-link></li>
-            <li class="mb-4"><nuxt-link class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="#"><i class="fas fa-pencil-alt mr-2"></i> Authors</nuxt-link></li>
-            <li class="mb-4"><nuxt-link class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="#"><i class="fas fa-users mr-2"></i> Groups</nuxt-link></li>
-            <li class="mb-4"><nuxt-link class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="#"><i class="fas fa-th-list mr-2"></i> Series</nuxt-link></li>
-            <li class="mb-4"><nuxt-link class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="#"><i class="fas fa-user-friends mr-2"></i> Characters</nuxt-link></li>
+            <li class="mb-4"><nuxt-link class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="/genre"><i class="fas fa-tags mr-2"></i> Genres</nuxt-link></li>
+            <li class="mb-4"><nuxt-link class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="/author"><i class="fas fa-pencil-alt mr-2"></i> Authors</nuxt-link></li>
+            <li class="mb-4"><nuxt-link class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="/group"><i class="fas fa-users mr-2"></i> Groups</nuxt-link></li>
+            <li class="mb-4"><nuxt-link class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="/series"><i class="fas fa-th-list mr-2"></i> Series</nuxt-link></li>
+            <li class="mb-4"><nuxt-link class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="/character"><i class="fas fa-user-friends mr-2"></i> Characters</nuxt-link></li>
           </ul>
         </nav>
         <Footer />
