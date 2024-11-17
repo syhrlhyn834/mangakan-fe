@@ -19,11 +19,12 @@
       </button>
       <div class="relative w-full">
         <input
-         v-model="searchQuery"
-          type="text"
-          placeholder="Cari Judul/Genre/Series/Character/Author/Group..."
-          class="w-full p-2 pr-10 rounded bg-gray-800 text-white"
-        />
+  v-model="searchQuery"
+  type="text"
+  placeholder="Cari Judul/Genre/Series/Character/Author/Group..."
+  class="w-full max-w-full p-2 pr-10 rounded bg-gray-800 text-white"
+/>
+
       </div>
       <button @click="search" class="ml-2 text-lg">
         <i class="fas fa-search"></i>
