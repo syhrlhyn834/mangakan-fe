@@ -76,16 +76,15 @@ export default {
     };
   },
   mounted() {
-    this.fetchChapterData();
-    // Event listeners untuk menangani fullscreen
-    document.addEventListener('fullscreenchange', this.onFullscreenChange);
-    document.addEventListener('webkitfullscreenchange', this.onFullscreenChange); // Safari
-    document.addEventListener('mozfullscreenchange', this.onFullscreenChange); // Firefox
-    document.addEventListener('msfullscreenchange', this.onFullscreenChange); // IE/Edge
+  this.fetchChapterData();
+  document.addEventListener('fullscreenchange', this.onFullscreenChange);
+  document.addEventListener('webkitfullscreenchange', this.onFullscreenChange); // Safari
+  document.addEventListener('mozfullscreenchange', this.onFullscreenChange); // Firefox
+  document.addEventListener('msfullscreenchange', this.onFullscreenChange); // IE/Edge
+  window.addEventListener('resize', this.checkFullscreen);  // Periksa resize untuk mobile
 
-    // Memeriksa status fullscreen saat pertama kali dimuat
-    this.checkFullscreen();
-  },
+  this.checkFullscreen();
+},
   beforeDestroy() {
     // Hapus event listeners untuk cleanup
     document.removeEventListener('fullscreenchange', this.onFullscreenChange);
@@ -210,13 +209,16 @@ export default {
       this.isFullscreen = false;
     },
     onFullscreenChange() {
-      // Mengecek status fullscreen setiap kali terjadi perubahan
-      if (!document.fullscreenElement) {
-        this.isFullscreen = false;
-      } else {
-        this.isFullscreen = true;
-      }
-    },
+  // Pastikan status fullscreen diperbarui dengan benar
+  if (!document.fullscreenElement &&
+      !document.webkitFullscreenElement &&
+      !document.mozFullScreenElement &&
+      !document.msFullscreenElement) {
+    this.isFullscreen = false;
+  } else {
+    this.isFullscreen = true;
+  }
+},
     checkFullscreen() {
       // Memastikan status fullscreen saat aplikasi dimuat
       if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
