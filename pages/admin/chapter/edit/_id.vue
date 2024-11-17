@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto px-4">
-    <h1 class="text-2xl font-semibold mb-4">Tambah Chapter</h1>
+    <h1 class="text-2xl font-semibold mb-4">Update Chapter</h1>
     <form @submit.prevent="storechapter" class="space-y-4">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Title -->
@@ -66,7 +66,7 @@
             @change="handleFileChangeContent"
             accept=".pdf,.cbz"
             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            required
+
           />
           <p v-if="validation.content" class="text-red-500 text-sm mt-1">{{ validation.content[0] }}</p>
         </div>
@@ -78,7 +78,7 @@
             name="content-url"
             placeholder="https://example.com/content"
             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            required
+
           />
           <p v-if="validation.content" class="text-red-500 text-sm mt-1">{{ validation.content[0] }}</p>
         </div>
@@ -99,7 +99,7 @@
                 class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
               >
                 <span>Upload a file</span>
-                <input id="file-upload" type="file" class="sr-only" @change="handleFileChange" required />
+                <input id="file-upload" type="file" class="sr-only" @change="handleFileChange" />
               </label>
               <p class="pl-1">or drag and drop</p>
             </div>
@@ -225,36 +225,44 @@ export default {
     },
     async storechapter() {
   let formData = new FormData();
-  formData.append('image', this.chapter.image);
+
+  // Kirim gambar hanya jika ada perubahan
+  if (this.chapter.image instanceof File) {
+    formData.append('image', this.chapter.image);
+  }
+
+  // Kirim konten hanya jika ada perubahan
+  if (this.chapter.content instanceof File || this.chapter.contentType === 'url') {
+    if (this.chapter.contentType === 'file') {
+      formData.append('content', this.chapter.content); // File content
+    } else if (this.chapter.contentType === 'url') {
+      formData.append('url', this.chapter.content); // URL content
+    }
+  }
+
+  // Kirim data lainnya
   formData.append('title', this.chapter.title);
   formData.append('manga_id', this.chapter.manga_id);
   formData.append('chapter_number', this.chapter.chapter_number);
-
-  // Append content based on the selected content type
-  if (this.chapter.contentType === 'file') {
-    formData.append('content', this.chapter.content); // This will be the file
-  } else if (this.chapter.contentType === 'url') {
-    formData.append('url', this.chapter.content); // This will be the URL
-  }
-
-
-  formData.append("_method", "PATCH");
+  formData.append('_method', 'PATCH');
 
   try {
     await this.$axios.post(`/api/admin/chapters/${this.$route.params.id}`, formData);
     this.$swal.fire({
       title: 'BERHASIL!',
-      text: "Data Berhasil Diupdate!",
+      text: 'Data Berhasil Diupdate!',
       icon: 'success',
       showConfirmButton: false,
-      timer: 2000
+      timer: 2000,
     });
     this.$router.push({ name: 'admin-chapter' });
   } catch (error) {
     console.error('Error submitting chapter:', error.response.data);
-    this.validation = error.response.data.errors; // Capture the validation errors
+    this.validation = error.response.data.errors;
   }
 }
+
+
   }
 };
 </script>
