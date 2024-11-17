@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-2xl font-semibold mb-4">series Manga</h1>
+    <h1 class="text-2xl font-semibold mb-4">Series Manga</h1>
     <div class="flex flex-col sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
       <label for="table-search" class="sr-only">Search</label>
       <div class="relative">

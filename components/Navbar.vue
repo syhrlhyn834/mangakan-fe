@@ -2,8 +2,9 @@
   <div class="bg-[#191b1d] text-white p-4 flex flex-col items-center md:flex-row md:justify-between sticky top-0 z-50">
     <div class="flex items-center justify-center mb-2 md:hidden">
       <img
-        src="https://storage.googleapis.com/a1aa/image/w0Di61ixga6NIht03hfB3mc9oODsKPvulltsfXlANn7rPStTA.jpg"
-        alt="MangaDex Logo"
+        v-if="logoImage"
+        :src="logoImage"
+        alt="Logo"
         class="w-12 h-12"
       />
     </div>
@@ -18,12 +19,13 @@
       </button>
       <div class="relative w-full">
         <input
+         v-model="searchQuery"
           type="text"
           placeholder="Cari Judul/Genre/Series/Character/Author/Group..."
           class="w-full p-2 pr-10 rounded bg-gray-800 text-white"
         />
       </div>
-      <button class="ml-2 text-lg">
+      <button @click="search" class="ml-2 text-lg">
         <i class="fas fa-search"></i>
       </button>
     </div>
@@ -35,11 +37,12 @@
           <div class="flex justify-between items-center p-4">
             <div class="flex items-center">
               <img
-                src="https://storage.googleapis.com/a1aa/image/w0Di61ixga6NIht03hfB3mc9oODsKPvulltsfXlANn7rPStTA.jpg"
+                v-if="logoImage"
+                :src="logoImage"
                 alt="Logo"
                 class="mr-2 h-10"
               />
-              <h2 class="text-2xl font-bold">Mangadex</h2>
+              <h2 class="text-2xl font-bold">{{ logoName }}</h2>
             </div>
             <button @click="toggleMenu" class="text-2xl">
               <i class="fas fa-times"></i>
@@ -100,21 +103,45 @@ export default {
     return {
       isMenuOpen: false,
       isTypesMenuOpen: false,
+      searchQuery: '', // Variabel untuk menyimpan nilai input pencarian
+      logoImage: '', // Variabel untuk menyimpan URL logo
+      logoName: '',
     };
   },
+  mounted() {
+    this.fetchLogo();
+  },
   methods: {
-  toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
+    },
+    toggleTypesMenu() {
+      this.isTypesMenuOpen = !this.isTypesMenuOpen;
+    },
+    closeMenu() {
+      this.isMenuOpen = false;
+    },
+    search() {
+      if (this.searchQuery.trim()) {
+        // Arahkan ke halaman pencarian dengan slug berdasarkan input
+        this.$router.push({ name: 'search-slug', params: { slug: this.searchQuery } });
+      }
+    },
+    async fetchLogo() {
+      try {
+        const response = await this.$axios.get('/api/web/headers');
+        if (response.data.success && response.data.data.length > 0) {
+          this.logoImage = response.data.data[0].image;  // Ambil URL image dari API
+          this.logoName = response.data.data[0].name;
+        }
+      } catch (error) {
+        console.error('Error fetching logo:', error);
+      }
+    },
   },
-  toggleTypesMenu() {
-    this.isTypesMenuOpen = !this.isTypesMenuOpen;
-  },
-  closeMenu() {
-    this.isMenuOpen = false;
-  },
-},
 };
 </script>
+
 
 <style scoped>
 .slide-enter-active,

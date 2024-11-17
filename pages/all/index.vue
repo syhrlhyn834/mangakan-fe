@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="bg-[#191b1d] min-h-screen flex flex-col">
     <div class="px-4 mb-2 flex-grow">
@@ -14,7 +12,7 @@
         </a>
       </div>
 
-      <FilterSearch v-if="showFilterSearch" />
+      <FilterSearch v-if="showFilterSearch" @search="applyFilters" />
 
       <div class="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         <div v-for="manga in mangas" :key="manga.id" class="flex flex-col items-start">
@@ -29,7 +27,7 @@
           </div>
           <div class="w-full mt-3">
             <nuxt-link :to="{name: 'manga-slug', params: {slug: manga.slug}}" class="text-lg text-white font-semibold truncate">
-              {{ manga.title | truncate(20) }}
+              {{ manga.title | truncate(15) }}
             </nuxt-link>
             <div class="flex items-center justify-between text-sm mt-2 text-gray-400">
               <span>Chapter {{ manga.chapters.length }}</span>
@@ -40,49 +38,45 @@
       </div>
     </div>
 
-  <!-- Pagination untuk  -->
-<footer class="py-4 text-center">
-  <nav class="pagination" aria-label="Page">
-    <ul class="inline-flex items-center space-x-2">
-      <!-- Tombol Previous Page dengan ikon SVG untuk  -->
-      <li v-if="currentPage > 1" class="inline-block">
-        <a @click.prevent="changePage(currentPage - 1)"
-           class="text-white hover:text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stroke-current">
-            <polyline points="11 17 6 12 11 7"></polyline>
-            <polyline points="18 17 13 12 18 7"></polyline>
-          </svg>
-        </a>
-      </li>
+    <!-- Pagination -->
+    <footer class="py-4 text-center">
+      <nav class="pagination" aria-label="Page">
+        <ul class="inline-flex items-center space-x-2">
+          <li v-if="currentPage > 1" class="inline-block">
+            <a @click.prevent="changePage(currentPage - 1)" class="text-white hover:text-white">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stroke-current">
+                <polyline points="11 17 6 12 11 7"></polyline>
+                <polyline points="18 17 13 12 18 7"></polyline>
+              </svg>
+            </a>
+          </li>
 
-      <!-- Loop untuk halaman pagination  -->
-      <li v-for="page in displayPages" :key="page" class="inline-block">
-        <span v-if="page === '...'" class="text-white">...</span>
-        <a v-else
-           @click.prevent="changePage(page)"
-           :class="page === currentPage ? 'bg-[#ff6740] text-white' : 'text-white hover:text-white hover:bg-gray-700'"
-           class="px-3 py-1 rounded-md font-bold transition">
-          <strong>{{ page }}</strong>
-        </a>
-      </li>
+          <li v-for="page in displayPages" :key="page" class="inline-block">
+            <span v-if="page === '...'" class="text-white">...</span>
+            <a v-else @click.prevent="changePage(page)"
+               :class="page === currentPage ? 'bg-[#ff6740] text-white' : 'text-white hover:text-white hover:bg-gray-700'"
+               class="px-3 py-1 rounded-md font-bold transition">
+              <strong>{{ page }}</strong>
+            </a>
+          </li>
 
-      <!-- Tombol Next Page dengan ikon SVG untuk  -->
-      <li v-if="currentPage < totalPages" class="inline-block">
-        <a @click.prevent="changePage(currentPage + 1)"
-           class="text-white hover:text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stroke-current">
-            <polyline points="13 17 18 12 13 7"></polyline>
-            <polyline points="6 17 11 12 6 7"></polyline>
-          </svg>
-        </a>
-      </li>
-    </ul>
-  </nav>
-</footer>
+          <li v-if="currentPage < totalPages" class="inline-block">
+            <a @click.prevent="changePage(currentPage + 1)" class="text-white hover:text-white">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stroke-current">
+                <polyline points="13 17 18 12 13 7"></polyline>
+                <polyline points="6 17 11 12 6 7"></polyline>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </footer>
   </div>
 </template>
+
 <script>
-  import FilterSearch from '@/components/FilterSearch.vue'; // Pastikan path ini sesuai dengan lokasi komponen Anda
+import FilterSearch from '@/components/FilterSearch.vue';
+
 export default {
   name: 'All',
   filters: {
@@ -100,6 +94,7 @@ export default {
       currentPage: 1,
       totalPages: null,
       showFilterSearch: false,
+      filters: {}, // Menyimpan filter yang diterima
     };
   },
   computed: {
@@ -108,62 +103,68 @@ export default {
     },
   },
   methods: {
-    async fetchMangas(page) {
-      try {
-        const response = await this.$axios.get(`/api/web/mangas?page=${page}`);
-        this.mangas = response.data.data.data;
-        this.currentPage = response.data.data.current_page;  // Perbaikan di sini
-        this.totalPages = response.data.data.last_page;      // Perbaikan di sini
-      } catch (error) {
-        console.error("Error fetching mangas:", error);
-      }
-    },
+    async fetchMangas(page, filters = {}) {
+    try {
+      // Mengambil parameter dari URL, termasuk filter
+      const params = { page, ...filters };
+
+      const response = await this.$axios.get('/api/web/filterSearch', {
+        params,
+      });
+
+      this.mangas = response.data.data.data;
+      this.currentPage = response.data.data.current_page;
+      this.totalPages = response.data.data.last_page;
+    } catch (error) {
+      console.error('Error fetching mangas:', error);
+    }
+  },
     getDisplayPages(totalPages, currentPage) {
-  const pages = [];
-  const maxPagesToShow = 5;
+      const pages = [];
+      const maxPagesToShow = 5;
 
-  // Pastikan halaman pertama dan terakhir selalu muncul
-  if (totalPages <= maxPagesToShow) {
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(i);
-    }
-  } else {
-    const start = Math.max(currentPage - Math.floor(maxPagesToShow / 2), 2);
-    const end = Math.min(start + maxPagesToShow - 1, totalPages - 1);
+      if (totalPages <= maxPagesToShow) {
+        for (let i = 1; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        const start = Math.max(currentPage - Math.floor(maxPagesToShow / 2), 2);
+        const end = Math.min(start + maxPagesToShow - 1, totalPages - 1);
 
-    // Selalu tampilkan halaman pertama dan terakhir
-    if (start > 2) {
-      pages.push(1);
-    }
+        if (start > 2) pages.push(1);
+        for (let i = start; i <= end; i++) {
+          pages.push(i);
+        }
+        if (end < totalPages - 1) pages.push(totalPages);
+      }
 
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
-    }
-
-    if (end < totalPages - 1) {
-      pages.push(totalPages);
-    }
-  }
-
-  return pages;
-},
+      return pages;
+    },
     toggleFilterSearch() {
       this.showFilterSearch = !this.showFilterSearch;
     },
+    applyFilters(filters) {
+    this.filters = filters;
+    // Update URL query string dengan filter yang diterima
+    this.updateQuery(filters);
+    this.fetchMangas(1, filters); // Memanggil fetchMangas dengan filter yang diterima
+  },
     changePage(page) {
       this.$router.push({ query: { ...this.$route.query, pageManga: page } });
-      this.fetchMangas(page);  // Memanggil method dengan nama yang sesuai
+      this.fetchMangas(page, this.filters);
     },
+    updateQuery(filters) {
+    const query = { ...this.$route.query, ...filters }; // Gabungkan query lama dan filter baru
+    this.$router.push({ query });
   },
-
+  },
   async mounted() {
     const pageManga = parseInt(this.$route.query.pageManga) || 1;
-
-    // Set current page dari URL jika ada
     this.currentPage = pageManga;
 
-    // Fetch data berdasarkan halaman yang diambil dari URL
-    await this.fetchMangas(this.currentPage);  // Memanggil method dengan nama yang sesuai
+    // Mengambil filter dari query string
+    this.filters = { ...this.$route.query };
+    await this.fetchMangas(this.currentPage, this.filters);
   },
 };
 </script>
@@ -171,6 +172,6 @@ export default {
 <style scoped>
 .pagination a {
   transition: all 0.3s ease;
-  cursor: pointer; /* Menambahkan cursor pointer */
+  cursor: pointer;
 }
 </style>

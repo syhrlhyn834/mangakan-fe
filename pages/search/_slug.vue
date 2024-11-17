@@ -1,14 +1,17 @@
-
-
 <template>
   <div class="bg-[#191b1d] min-h-screen flex flex-col">
     <div class="px-4 mb-2 flex-grow">
       <div class="bg-[#ff6740] text-white p-1 md:p-1.5 rounded mb-2 flex justify-between items-center">
-        <h2 class="text-xl font-bold"><i class="fas fa-folder-open mr-1"></i> MANHWA</h2>
+        <h2 class="text-xl font-bold">
+          <i class="fas fa-folder-open mr-1"></i>
+          Search Results for:
+          <span>{{ searchQuery }}</span>
+        </h2>
       </div>
 
       <div class="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        <div v-for="manga in mangas" :key="manga.id" class="flex flex-col items-start">
+        <!-- Menampilkan manga jika ada -->
+        <div v-if="mangas && mangas.length > 0" v-for="manga in mangas" :key="manga.id" class="flex flex-col items-start">
           <div class="relative w-full">
             <v-img
               :src="manga.image"
@@ -16,22 +19,28 @@
               :alt="manga.title"
               class="w-full h-72 object-cover rounded-lg shadow-lg"
             ></v-img>
-            <span class="absolute bottom-3 right-3 bg-blue-600 text-sm text-white font-bold px-3 py-1 rounded">{{ manga.type.name }}</span>
+            <span class="absolute bottom-3 right-3 bg-blue-600 text-sm text-white font-bold px-3 py-1 rounded">
+              {{ manga.type ? manga.type.name : 'Unknown Type' }}
+            </span>
           </div>
           <div class="w-full mt-3">
             <nuxt-link :to="{name: 'manga-slug', params: {slug: manga.slug}}" class="text-lg text-white font-semibold truncate">
               {{ manga.title | truncate(15) }}
             </nuxt-link>
             <div class="flex items-center justify-between text-sm mt-2 text-gray-400">
-              <span>Chapter {{ manga.chapters.length }}</span>
+              <span>Chapter {{ manga.chapters && manga.chapters.length ? manga.chapters.length : 0 }}</span>
               <span class="text-right">{{ manga.status }}</span>
             </div>
           </div>
         </div>
+
+        <!-- Menampilkan pesan jika tidak ada manga -->
+        <div v-else class="text-white text-center mt-6">
+          <p>No manga found for this search.</p>
+        </div>
       </div>
     </div>
-
-  <!-- Pagination untuk  -->
+    <!-- Pagination untuk  -->
 <footer class="py-4 text-center">
   <nav class="pagination" aria-label="Page">
     <ul class="inline-flex items-center space-x-2">
@@ -72,9 +81,10 @@
 </footer>
   </div>
 </template>
+
 <script>
 export default {
-  name: 'All',
+  name: 'SearchSlug',
   filters: {
     truncate(value, length) {
       if (!value) return '';
@@ -83,7 +93,8 @@ export default {
   },
   data() {
     return {
-      mangas: [],
+      searchQuery: '',  // Menyimpan query pencarian
+      mangas: [], // Menyimpan hasil pencarian manga
       currentPage: 1,
       totalPages: null,
     };
@@ -93,18 +104,35 @@ export default {
       return this.getDisplayPages(this.totalPages, this.currentPage);
     },
   },
+  async mounted() {
+    this.searchQuery = this.$route.params.slug;  // Ambil parameter slug dari URL
+    await this.fetchMangas();
+    const pageManga = parseInt(this.$route.query.pageManga) || 1;
+
+    // Set current page dari URL jika ada
+    this.currentPage = pageManga;
+
+    // Fetch data berdasarkan halaman yang diambil dari URL
+    await this.fetchMangas(this.currentPage);  // Memanggil method dengan nama yang sesuai
+  },
   methods: {
-    async fetchMangas(page) {
-      try {
-        const response = await this.$axios.get(`/api/web/manhwaHome?page=${page}`);
-        this.mangas = response.data.data.data;
+  async fetchMangas(page) {
+    try {
+      const response = await this.$axios.get(`/api/web/mangas?q=${this.searchQuery}&page=${page}`);
+      console.log(response.data); // Debug: tampilkan data response di console
+      if (response.data.data.data) {
+        this.mangas = response.data.data.data; // Pastikan path ke array manga sesuai dengan struktur data response
         this.currentPage = response.data.data.current_page;  // Perbaikan di sini
-        this.totalPages = response.data.data.last_page;      // Perbaikan di sini
-      } catch (error) {
-        console.error("Error fetching mangas:", error);
+        this.totalPages = response.data.data.last_page;
+      } else {
+        this.mangas = [];
       }
-    },
-    getDisplayPages(totalPages, currentPage) {
+    } catch (error) {
+      console.error("Error fetching mangas:", error);
+      this.mangas = [];
+    }
+  },
+  getDisplayPages(totalPages, currentPage) {
   const pages = [];
   const maxPagesToShow = 5;
 
@@ -138,19 +166,8 @@ export default {
       this.fetchMangas(page);  // Memanggil method dengan nama yang sesuai
     },
   },
-
-  async mounted() {
-    const pageManga = parseInt(this.$route.query.pageManga) || 1;
-
-    // Set current page dari URL jika ada
-    this.currentPage = pageManga;
-
-    // Fetch data berdasarkan halaman yang diambil dari URL
-    await this.fetchMangas(this.currentPage);  // Memanggil method dengan nama yang sesuai
-  },
 };
 </script>
-
 <style scoped>
 .pagination a {
   transition: all 0.3s ease;

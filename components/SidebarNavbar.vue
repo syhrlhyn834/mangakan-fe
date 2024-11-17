@@ -4,8 +4,13 @@
       <div v-if="isSidebarOpen" class="w-full md:w-64 bg-[#2d2d2c] h-auto md:h-screen shadow-md hidden md:block fixed top-0 left-0 z-10">
         <div class="p-4 flex items-center justify-between">
           <div class="flex items-center">
-            <img alt="MangaDex Logo" class="w-10 h-10" src="https://storage.googleapis.com/a1aa/image/w0Di61ixga6NIht03hfB3mc9oODsKPvulltsfXlANn7rPStTA.jpg" />
-            <span class="ml-2 text-xl font-bold text-white">MangaDex</span>
+            <img
+              v-if="logoImage"
+              :src="logoImage"
+              alt="Logo MangaDex"
+              class="w-10 h-10"
+            />
+            <span class="ml-2 text-xl font-bold text-white">{{ logoName }}</span>
           </div>
           <button @click="$emit('toggle-sidebar')" class="text-2xl text-white">
             <i class="fas fa-times"></i>
@@ -58,6 +63,8 @@ export default {
   data() {
     return {
       isTypesOpen: false,
+      logoImage: '',  // Menyimpan URL logo dari API
+      logoName: '',    // Menyimpan nama logo dari API
     };
   },
   computed: {
@@ -68,10 +75,26 @@ export default {
   methods: {
     toggleTypes() {
       this.isTypesOpen = !this.isTypesOpen;
+    },
+    async fetchLogo() {
+      try {
+        const response = await this.$axios.get('/api/web/headers');
+        if (response.data.success && response.data.data.length > 0) {
+          this.logoImage = response.data.data[0].image;  // Menyimpan URL logo ke data
+          this.logoName = response.data.data[0].name;    // Menyimpan nama logo ke data
+        }
+      } catch (error) {
+        console.error('Error fetching logo:', error);
+      }
     }
   },
+  mounted() {
+    this.fetchLogo();  // Mengambil logo saat komponen dimuat
+  }
 }
 </script>
+
+
 
 <style scoped>
 .slide-fade-enter-active {

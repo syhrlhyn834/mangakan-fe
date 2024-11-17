@@ -1,5 +1,6 @@
 export default {
 
+
   // Target Deployment
   target: 'server',
 

@@ -24,7 +24,7 @@
           </div>
           <div class="w-full mt-3">
             <nuxt-link :to="{name: 'manga-slug', params: {slug: manga.slug}}" class="text-lg text-white font-semibold truncate">
-              {{ manga.title | truncate(20) }}
+              {{ manga.title | truncate(15) }}
             </nuxt-link>
 
 
