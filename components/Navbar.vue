@@ -19,11 +19,11 @@
       </button>
       <div class="relative w-full">
         <input
-         v-model="searchQuery"
-          type="text"
-          placeholder="Cari Judul/Genre/Series/Character/Author/Group..."
-          class="w-full p-2 pr-10 rounded bg-gray-800 text-white"
-        />
+  v-model="searchQuery"
+  type="text"
+  placeholder="Cari Judul/Genre/Series/Character/Author/Group..."
+  class="w-full p-2 rounded bg-gray-800 text-white"
+/>
       </div>
       <button @click="search" class="ml-2 text-lg">
         <i class="fas fa-search"></i>
@@ -67,17 +67,17 @@
               </span>
               <transition name="expand">
                 <ul v-if="isTypesMenuOpen" class="ml-4 transition-all duration-300 overflow-hidden" :style="{ maxHeight: isTypesMenuOpen ? '200px' : '0' }">
-                  <li class="mb-2"><nuxt-link @click.native="closeMenu" class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="#"><i class="fas fa-tag mr-2"></i> Doujinshi</nuxt-link></li>
-                  <li class="mb-2"><nuxt-link @click.native="closeMenu" class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="#"><i class="fas fa-tag mr-2"></i> Manga</nuxt-link></li>
-                  <li class="mb-2"><nuxt-link @click.native="closeMenu" class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="#"><i class="fas fa-tag mr-2"></i> Manhwa</nuxt-link></li>
+                  <li class="mb-2"><nuxt-link @click.native="closeMenu" class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="/types/doujinshi"><i class="fas fa-tag mr-2"></i> Doujinshi</nuxt-link></li>
+                  <li class="mb-2"><nuxt-link @click.native="closeMenu" class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="/type/manga"><i class="fas fa-tag mr-2"></i> Manga</nuxt-link></li>
+                  <li class="mb-2"><nuxt-link @click.native="closeMenu" class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="/types/manhwa"><i class="fas fa-tag mr-2"></i> Manhwa</nuxt-link></li>
                 </ul>
               </transition>
             </li>
-            <li class="mb-4"><nuxt-link @click.native="closeMenu" class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="#"><i class="fas fa-tags mr-2"></i> Genres</nuxt-link></li>
-            <li class="mb-4"><nuxt-link @click.native="closeMenu" class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="#"><i class="fas fa-pencil-alt mr-2"></i> Authors</nuxt-link></li>
-            <li class="mb-4"><nuxt-link @click.native="closeMenu" class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="#"><i class="fas fa-users mr-2"></i> Groups</nuxt-link></li>
-            <li class="mb-4"><nuxt-link @click.native="closeMenu" class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="#"><i class="fas fa-th-list mr-2"></i> Series</nuxt-link></li>
-            <li class="mb-4"><nuxt-link @click.native="closeMenu" class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="#"><i class="fas fa-user-friends mr-2"></i> Characters</nuxt-link></li>
+            <li class="mb-4"><nuxt-link @click.native="closeMenu" class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="/genre"><i class="fas fa-tags mr-2"></i> Genres</nuxt-link></li>
+            <li class="mb-4"><nuxt-link @click.native="closeMenu" class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="/author"><i class="fas fa-pencil-alt mr-2"></i> Authors</nuxt-link></li>
+            <li class="mb-4"><nuxt-link @click.native="closeMenu" class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="/group"><i class="fas fa-users mr-2"></i> Groups</nuxt-link></li>
+            <li class="mb-4"><nuxt-link @click.native="closeMenu" class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="/series"><i class="fas fa-th-list mr-2"></i> Series</nuxt-link></li>
+            <li class="mb-4"><nuxt-link @click.native="closeMenu" class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="/character"><i class="fas fa-user-friends mr-2"></i> Characters</nuxt-link></li>
           </ul>
         </div>
         <div class="absolute bottom-0 w-full p-4 text-gray-500 text-sm">

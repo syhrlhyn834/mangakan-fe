@@ -16,7 +16,7 @@
           class="px-3 py-1 rounded-md transition-colors"
           :class="mode === 'vertical' ? 'bg-[#ff6740] text-white' : 'bg-gray-700 hover:bg-gray-600'"
         >
-          Vertical Scroll
+          Scroll Down
         </button>
         <button
           @click="toggleFullscreen"
