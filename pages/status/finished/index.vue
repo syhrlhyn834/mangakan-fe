@@ -20,7 +20,7 @@
           </div>
           <div class="w-full mt-3">
             <nuxt-link :to="{name: 'manga-slug', params: {slug: manga.slug}}" class="text-lg text-white font-semibold truncate">
-              {{ manga.title }}
+              {{ manga.title | truncate(20) }}
             </nuxt-link>
             <div class="flex items-center justify-between text-sm mt-2 text-gray-400">
               <span>Chapter {{ manga.chapters.length }}</span>
@@ -75,6 +75,12 @@
 <script>
 export default {
   name: 'All',
+  filters: {
+    truncate(value, length) {
+      if (!value) return '';
+      return value.length > length ? value.substring(0, length) + '...' : value;
+    }
+  },
   data() {
     return {
       mangas: [],

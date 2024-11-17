@@ -103,7 +103,7 @@
         </div>
         <div class="flex flex-col ml-2">
           <p class="font-bold text-sm"><nuxt-link :to="{name: 'manga-chapter-slug', params: {slug: chapter.slug}}">
-            {{ chapter.title }}
+            {{ chapter.title | truncate(20) }}
           </nuxt-link></p>
 
           <span class="text-xs">{{ chapter.created_at }}</span>
@@ -151,6 +151,12 @@
 
 <script>
 export default {
+  filters: {
+    truncate(value, length) {
+      if (!value) return '';
+      return value.length > length ? value.substring(0, length) + '...' : value;
+    }
+  },
   async asyncData({ params, $axios }) {
   try {
     // Fetch manga details by slug
