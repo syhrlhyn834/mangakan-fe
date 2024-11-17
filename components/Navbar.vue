@@ -8,27 +8,31 @@
         class="w-12 h-12"
       />
     </div>
-    <div class="flex items-center justify-between w-full md:w-auto">
+    <div class="flex items-center justify-between w-full">
       <!-- Tombol Hamburger khusus desktop -->
       <button v-if="!isSidebarOpen" @click="$emit('toggle-sidebar')" class="mr-2 text-lg hidden md:block">
         <i class="fas fa-bars"></i>
       </button>
+
       <!-- Tombol Hamburger untuk mobile -->
       <button @click="toggleMenu" class="mr-2 text-lg md:hidden">
         <i class="fas fa-bars"></i>
       </button>
-      <div class="relative w-full">
+
+      <div class="relative flex-grow">
         <input
-  v-model="searchQuery"
-  type="text"
-  placeholder="Cari Judul/Genre/Series/Character/Author/Group..."
-  class="w-full p-2 rounded bg-gray-800 text-white"
-/>
+          v-model="searchQuery"
+          type="text"
+          placeholder="Cari Judul/Genre/Series/Character/Author/Group..."
+          class="w-full p-2 rounded bg-gray-800 text-white"
+        />
       </div>
+
       <button @click="search" class="ml-2 text-lg">
         <i class="fas fa-search"></i>
       </button>
     </div>
+
 
     <!-- Sidebar Mobile -->
     <transition name="slide">
