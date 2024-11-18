@@ -77,10 +77,6 @@
             <input type="radio" name="order" value="Latest Added" v-model="selectedOrder" class="form-radio text-[#ff6740]">
             <span class="ml-2 text-white">Latest Added</span>
           </label>
-          <label class="inline-flex items-center">
-            <input type="radio" name="order" value="Popular" v-model="selectedOrder" class="form-radio text-[#ff6740]">
-            <span class="ml-2 text-white">Popular</span>
-          </label>
         </div>
       </div>
 

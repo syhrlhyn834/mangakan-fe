@@ -103,7 +103,7 @@
         </div>
         <div class="flex flex-col ml-2">
           <p class="font-bold text-sm"><nuxt-link :to="{name: 'manga-chapter-slug', params: {slug: chapter.slug}}" class="text-white">
-            {{ chapter.title | truncate(15) }}
+            {{ chapter.title }}
           </nuxt-link></p>
 
           <span class="text-xs">{{ chapter.created_at }}</span>

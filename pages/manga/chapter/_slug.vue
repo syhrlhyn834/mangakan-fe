@@ -44,7 +44,7 @@
   </div>
 
   <!-- Vertical Scroll Mode -->
-  <div v-if="mode === 'vertical'" class="overflow-y-auto h-full w-full space-y-4" ref="verticalScrollContainer">
+  <div v-if="mode === 'vertical'" class="overflow-y-auto h-full w-full" ref="verticalScrollContainer">
     <div
       v-for="page in renderedPages"
       :key="page"
