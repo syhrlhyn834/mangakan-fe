@@ -28,21 +28,22 @@
     </div>
 
    <!-- PDF Viewer -->
-<div class="flex-grow overflow-hidden bg-gray-900">
+   <div class="flex overflow-hidden bg-gray-900">
   <!-- Single Page Mode -->
   <div
     v-if="mode === 'single'"
-    class="relative h-full w-screen flex items-center justify-center"
+    class="relative h-screen w-screen flex items-center justify-center"
     ref="singlePageContainer"
     @click="handleSinglePageClick"
   >
     <canvas
       ref="pdfCanvas"
-      class="h-screen mx-auto shadow-lg"
+      class="h-full mx-auto shadow-lg"
       style="max-width: 100%;"
     ></canvas>
   </div>
-
+</div>
+  <div class="flex-grow overflow-hidden bg-gray-900">
   <!-- Vertical Scroll Mode -->
   <div v-if="mode === 'vertical'" class="overflow-y-auto h-full w-full" ref="verticalScrollContainer">
     <div
