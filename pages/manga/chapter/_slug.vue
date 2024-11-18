@@ -32,13 +32,13 @@
   <!-- Single Page Mode -->
   <div
     v-if="mode === 'single'"
-    class="relative h-screen w-screen flex items-center justify-center"
+    class="relative h-full w-screen flex items-center justify-center"
     ref="singlePageContainer"
     @click="handleSinglePageClick"
   >
     <canvas
       ref="pdfCanvas"
-      class="h-full mx-auto shadow-lg"
+      class="h-screen mx-auto shadow-lg"
       style="max-width: 100%;"
     ></canvas>
   </div>
