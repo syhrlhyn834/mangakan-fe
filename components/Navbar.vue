@@ -72,7 +72,7 @@
               <transition name="expand">
                 <ul v-if="isTypesMenuOpen" class="ml-4 transition-all duration-300 overflow-hidden" :style="{ maxHeight: isTypesMenuOpen ? '200px' : '0' }">
                   <li class="mb-2"><nuxt-link @click.native="closeMenu" class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="/types/doujinshi"><i class="fas fa-tag mr-2"></i> Doujinshi</nuxt-link></li>
-                  <li class="mb-2"><nuxt-link @click.native="closeMenu" class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="/type/manga"><i class="fas fa-tag mr-2"></i> Manga</nuxt-link></li>
+                  <li class="mb-2"><nuxt-link @click.native="closeMenu" class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="/types/manga"><i class="fas fa-tag mr-2"></i> Manga</nuxt-link></li>
                   <li class="mb-2"><nuxt-link @click.native="closeMenu" class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="/types/manhwa"><i class="fas fa-tag mr-2"></i> Manhwa</nuxt-link></li>
                 </ul>
               </transition>
