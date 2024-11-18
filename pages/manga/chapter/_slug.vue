@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex flex-col">
+  <div class="relative h-screen flex flex-col">
     <!-- Navbar -->
     <div v-if="!isFullscreen" class="px-2 md:px-8 py-2 bg-gray-800 text-white ">
       <h1 class="text-lg font-semibold truncate mb-4">{{ chapterTitle }}</h1>
