@@ -19,11 +19,12 @@
           Scroll Down
         </button>
         <button
-          @click="toggleFullscreen"
-          class="px-3 py-1 rounded-md bg-gray-700 hover:bg-gray-600"
-        >
-          Fullscreen
-        </button>
+  @click="toggleFullscreen"
+  class="px-3 py-1 rounded-md bg-gray-700 hover:bg-gray-600 hidden lg:block"
+>
+  Fullscreen
+</button>
+
       </div>
     </div>
 
@@ -37,10 +38,11 @@
     @click="handleSinglePageClick"
   >
     <canvas
-      ref="pdfCanvas"
-      class="h-full mx-auto shadow-lg"
-      style="max-width: 100%;"
-    ></canvas>
+  ref="pdfCanvas"
+  class="mx-auto shadow-lg"
+  style="width: 100%; height: auto; max-height: 100%;"
+></canvas>
+
   </div>
 </div>
   <div class="flex-grow overflow-hidden bg-gray-900">
