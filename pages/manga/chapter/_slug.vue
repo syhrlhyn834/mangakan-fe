@@ -1,7 +1,7 @@
 <template>
-  <div class="relative h-screen w-screen flex flex-col">
+  <div class="relative flex flex-col">
     <!-- Navbar -->
-    <div v-if="!isFullscreen" class="px-4 py-2 bg-gray-800 text-white">
+    <div v-if="!isFullscreen" class="px-2 md:px-8 py-2 bg-gray-800 text-white ">
       <h1 class="text-lg font-semibold truncate mb-4">{{ chapterTitle }}</h1>
       <div class="flex space-x-2">
         <button
@@ -247,4 +247,6 @@ export default {
 ::-webkit-scrollbar-thumb:hover {
   background: #777;
 }
+
+
 </style>

@@ -89,13 +89,18 @@
         </div>
       </div>
 
-     <!-- Daftar Chapter Card -->
-<div class="bg-gray-800 p-4 rounded mb-4">
-  <h2 class="text-xs md:text-xl font-bold">Daftar Chapter {{ manga.title }}:</h2>
-  <input class="w-full mt-2 p-1 bg-black text-sm text-white rounded" placeholder="Cari Chapter Ex: 99" type="text" />
+    <!-- Chapter Search -->
+    <div class="bg-gray-800 p-4 rounded mb-4">
+      <h2 class="text-xs md:text-xl font-bold">Daftar Chapter {{ manga.title }}:</h2>
+      <input
+        v-model="searchQuery"
+        class="w-full mt-2 p-1 bg-black text-sm text-white rounded"
+        placeholder="Cari Chapter Ex: 99"
+        type="text"
+      />
   <div class="mt-2">
     <div class="flex flex-col space-y-4">
-      <div v-for="(chapter, index) in manga.chapters" :key="chapter.id" class="flex items-center">
+      <div v-for="(chapter, index) in filteredChapters" :key="chapter.id" class="flex items-center">
         <div class="bg-[#ff6740] text-white text-sm py-1 px-2 rounded text-center w-12 h-auto">
           <div>{{ chapter.chapter_number }}</div>
           <!-- Pastikan kondisi ini benar, jika status adalah Finished dan chapter ini adalah yang terakhir -->
@@ -135,7 +140,7 @@
             </div>
             <div class="w-full mt-3">
               <nuxt-link :to="{name: 'manga-slug', params: {slug: item.slug}}" class="text-lg text-white font-semibold truncate">
-                {{ item.title }}
+                {{ item.title | truncate(15) }}
               </nuxt-link>
               <div class="flex items-center justify-between text-sm mt-2 text-gray-400">
                 <span>Chapter {{ item.chapters.length }}</span>
@@ -157,44 +162,60 @@ export default {
       return value.length > length ? value.substring(0, length) + '...' : value;
     }
   },
+  data() {
+    return {
+      // Menyimpan input pencarian chapter
+      searchQuery: '',
+    };
+  },
+  computed: {
+    // Filter chapter berdasarkan input pencarian
+    filteredChapters() {
+      return this.manga.chapters.filter(chapter => {
+        // Cari chapter berdasarkan nomor chapter atau judul
+        const searchNumber = this.searchQuery.trim();
+        return chapter.chapter_number.toString().includes(searchNumber) || chapter.title.toLowerCase().includes(searchNumber.toLowerCase());
+      });
+    },
+  },
   async asyncData({ params, $axios }) {
-  try {
-    // Fetch manga details by slug
-    const { data: mangaDetails } = await $axios.get(`/api/web/mangas/${params.slug}`);
+    try {
+      // Fetch manga details by slug
+      const { data: mangaDetails } = await $axios.get(`/api/web/mangas/${params.slug}`);
 
-    // Fetch the latest manga for "You May Also Like"
-    const { data: latestMangas } = await $axios.get(`/api/web/mangas`);
+      // Fetch the latest manga for "You May Also Like"
+      const { data: latestMangas } = await $axios.get(`/api/web/mangas`);
 
-    // Filter mangas with the same genre as the current manga, excluding the current manga
-    const filteredMangas = latestMangas.data.data.filter((item) => {
-      return item.genres.some((genre) =>
-        mangaDetails.data.genres.some((mangaGenre) => mangaGenre.id === genre.id)
-      ) && item.id !== mangaDetails.data.id;
-    });
+      // Filter mangas with the same genre as the current manga, excluding the current manga
+      const filteredMangas = latestMangas.data.data.filter((item) => {
+        return item.genres.some((genre) =>
+          mangaDetails.data.genres.some((mangaGenre) => mangaGenre.id === genre.id)
+        ) && item.id !== mangaDetails.data.id;
+      });
 
-    // If no manga with the same genre, fallback to the latest mangas, excluding the current manga
-    const youMayAlsoLike = filteredMangas.length > 0
-      ? filteredMangas
-      : latestMangas.data.data.filter(item => item.id !== mangaDetails.data.id).slice(0, 6);
+      // If no manga with the same genre, fallback to the latest mangas, excluding the current manga
+      const youMayAlsoLike = filteredMangas.length > 0
+        ? filteredMangas
+        : latestMangas.data.data.filter(item => item.id !== mangaDetails.data.id).slice(0, 6);
 
-    return {
-      manga: mangaDetails.data,
-      youMayAlsoLike // Show mangas with the same genre or fallback to the latest 6 mangas excluding the current one
-    };
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    return {
-      manga: null,
-      youMayAlsoLike: []
-    };
-  }
-},
+      return {
+        manga: mangaDetails.data,
+        youMayAlsoLike, // Show mangas with the same genre or fallback to the latest 6 mangas excluding the current one
+      };
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return {
+        manga: null,
+        youMayAlsoLike: [],
+      };
+    }
+  },
   methods: {
     // Fungsi untuk mendapatkan nomor chapter terbesar
     getLastChapterNumber(chapters) {
       return Math.max(...chapters.map(chapter => chapter.chapter_number));
-    }
-  }
+    },
+  },
 };
 </script>
 
