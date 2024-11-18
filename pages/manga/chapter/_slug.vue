@@ -1,5 +1,5 @@
 <template>
-  <div class="relative h-screen flex flex-col">
+  <div class="relative min-h-screen flex flex-col">
     <!-- Navbar -->
     <div v-if="!isFullscreen" class="px-2 md:px-8 py-2 bg-gray-800 text-white ">
       <h1 class="text-lg font-semibold truncate mb-4">{{ chapterTitle }}</h1>
@@ -32,7 +32,7 @@
   <!-- Single Page Mode -->
   <div
     v-if="mode === 'single'"
-    class="relative h-full w-full flex items-center justify-center"
+    class="relative h-screen w-screen flex items-center justify-center"
     ref="singlePageContainer"
     @click="handleSinglePageClick"
   >

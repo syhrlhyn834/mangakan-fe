@@ -13,15 +13,16 @@
       </div>
       <div class="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         <div v-for="manga in mangas" :key="manga.id" class="flex flex-col items-start">
-          <div class="relative w-full">
+          <nuxt-link :to="{name: 'manga-slug', params: {slug: manga.slug}}" class="relative w-full">
             <v-img
-              :src="manga.image"
-              :lazy-src="manga.image"
-              :alt="manga.title"
-              class="w-full h-72 object-cover rounded-lg shadow-lg"
-            ></v-img>
+  :src="getCurrentImage(manga)"
+  :lazy-src="manga.image"
+  :alt="manga.title"
+  class="w-full h-72 object-cover rounded-lg shadow-lg"
+></v-img>
+
             <span class="absolute bottom-3 right-3 bg-blue-600 text-sm text-white font-bold px-3 py-1 rounded">{{ manga.type.name }}</span>
-          </div>
+          </nuxt-link>
           <div class="w-full mt-3">
             <nuxt-link :to="{name: 'manga-slug', params: {slug: manga.slug}}" class="text-lg text-white font-semibold truncate">
               {{ manga.title | truncate(15) }}
@@ -89,15 +90,16 @@
       </div>
       <div class="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         <div v-for="manhwa in manhwas" :key="manhwa.id" class="flex flex-col items-start">
-          <div class="relative w-full">
+          <nuxt-link :to="{name: 'manga-slug', params: {slug: manhwa.slug}}" class="relative w-full">
             <v-img
-              :src="manhwa.image"
-              :lazy-src="manhwa.image"
-              :alt="manhwa.title"
-              class="w-full h-72 object-cover rounded-lg shadow-lg"
-            ></v-img>
+  :src="getCurrentImage(manhwa)"
+  :lazy-src="manhwa.image"
+  :alt="manhwa.title"
+  class="w-full h-72 object-cover rounded-lg shadow-lg"
+></v-img>
+
             <span class="absolute bottom-3 right-3 bg-blue-600 text-sm text-white font-bold px-3 py-1 rounded">{{ manhwa.type.name }}</span>
-          </div>
+          </nuxt-link>
           <div class="w-full mt-3">
             <nuxt-link :to="{name: 'manga-slug', params: {slug: manhwa.slug}}" class="text-lg text-white font-semibold truncate">
               {{ manhwa.title | truncate(20) }}
@@ -174,6 +176,8 @@ export default {
       currentPageManhwa: 1,
       totalPagesDoujin: null,
       totalPagesManhwa: null,
+      currentImageIndex: 0,
+      imageInterval: null,
     };
   },
   computed: {
@@ -185,6 +189,23 @@ export default {
     },
   },
   methods: {
+    getCurrentImage(item) {
+    const chapterImages = item.chapters.map(chapter => chapter.image).filter(Boolean);
+    if (chapterImages.length === 0) {
+      return item.image;
+    }
+    const images = [item.image, ...chapterImages];
+    return images[this.currentImageIndex % images.length];
+  },
+  startImageRotation() {
+    this.imageInterval = setInterval(() => {
+      this.currentImageIndex++;
+    }, 2000); // Ganti gambar setiap 2 detik
+  },
+  stopImageRotation() {
+    clearInterval(this.imageInterval);
+  },
+
     getDisplayPages(totalPages, currentPage) {
   const pages = [];
   const maxPagesToShow = 5;
@@ -266,7 +287,14 @@ export default {
     // Fetch data berdasarkan halaman yang diambil dari URL
     await this.fetchDoujin(this.currentPageDoujin);
     await this.fetchManhwa(this.currentPageManhwa);
+
+    // Mulai rotasi gambar
+  this.startImageRotation();
   },
+beforeDestroy() {
+  // Hentikan rotasi gambar saat komponen dihancurkan
+  this.stopImageRotation();
+},
 };
 </script>
 

@@ -20,16 +20,18 @@
         <!-- Manga -->
         <div>
           <label for="manga" class="block text-sm font-medium text-gray-700">Manga</label>
-          <select
-            v-model="chapter.manga_id"
-            id="manga"
-            name="manga"
-            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            required
-          >
-            <option value="" disabled>Select Manga</option>
-            <option v-for="manga in mangas" :key="manga.id" :value="manga.id">{{ manga.title }}</option>
-          </select>
+          <multiselect
+    v-model="chapter.manga_id"
+    :options="mangas"
+    :searchable="true"
+    :clear-on-select="false"
+    :close-on-select="true"
+    :multiple="false"
+    label="title"
+    track-by="id"
+    placeholder="Select Manga"
+    required
+  ></multiselect>
           <p v-if="validation.manga_id" class="text-red-500 text-sm mt-1">{{ validation.manga_id[0] }}</p>
         </div>
       </div>
@@ -148,22 +150,31 @@ export default {
 
   async mounted() {
   try {
-    const chapterResponse = await this.$axios.get('/api/admin/mangas');
-    if (chapterResponse.data && chapterResponse.data.data && Array.isArray(chapterResponse.data.data.data)) {
-      this.mangas = chapterResponse.data.data.data; // Corrected to use mangas
+    // Mengambil daftar manga
+    const mangasResponse = await this.$axios.get('/api/admin/mangas');
+    if (mangasResponse.data && mangasResponse.data.data && Array.isArray(mangasResponse.data.data.data)) {
+      this.mangas = mangasResponse.data.data.data;
     } else {
-      console.error('Invalid response structure for mangas:', chapterResponse.data);
+      console.error('Invalid response structure for mangas:', mangasResponse.data);
     }
 
-    const chapterResponse2 = await this.$axios.get(`/api/admin/chapters/${this.$route.params.id}`);
-    const chapterData = chapterResponse2.data.data; // Changed the variable name to avoid conflicts
-    this.chapter.title = chapterData.title;
+    // Mengambil data chapter
+    const chapterResponse = await this.$axios.get(`/api/admin/chapters/${this.$route.params.id}`);
+    const chapterData = chapterResponse.data.data;
 
+    this.chapter.title = chapterData.title;
     this.chapter.chapter_number = chapterData.chapter_number;
     this.chapter.content = chapterData.content;
-    this.chapter.image = chapterData.image; // Assuming you want to store the image path
-    this.imagePreview = chapterData.image; // Set initial preview image
-    this.chapter.manga_id = chapterData.manga_id; // Set the manga_id correctly
+    this.chapter.image = chapterData.image;
+    this.imagePreview = chapterData.image;
+
+    // Mengatur manga yang dipilih menggunakan objek manga dari response API
+    const selectedManga = chapterData.manga;
+    if (selectedManga) {
+      this.chapter.manga_id = selectedManga; // Menggunakan objek lengkap, bukan hanya ID
+    } else {
+      console.warn('Manga data not found in the response');
+    }
 
   } catch (error) {
     console.error('Error fetching chapter data:', error);
@@ -242,7 +253,7 @@ export default {
 
   // Kirim data lainnya
   formData.append('title', this.chapter.title);
-  formData.append('manga_id', this.chapter.manga_id);
+  formData.append('manga_id', this.chapter.manga_id.id || this.chapter.manga_id);
   formData.append('chapter_number', this.chapter.chapter_number);
   formData.append('_method', 'PATCH');
 

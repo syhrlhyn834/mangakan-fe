@@ -19,19 +19,24 @@
 
         <!-- Manga -->
         <div>
-          <label for="manga" class="block text-sm font-medium text-gray-700">Manga</label>
-          <select
-            v-model="chapter.manga_id"
-            id="manga"
-            name="manga"
-            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            required
-          >
-            <option value="" disabled>Select Manga</option>
-            <option v-for="manga in mangas" :key="manga.id" :value="manga.id">{{ manga.title }}</option>
-          </select>
-          <p v-if="validation.manga_id" class="text-red-500 text-sm mt-1">{{ validation.manga_id[0] }}</p>
-        </div>
+          <label for="manga" class="block text-sm font-medium text-gray-700">Pilih Manga</label>
+      <multiselect
+        v-model="chapter.manga_id"
+        :options="mangas"
+        :track-by="'id'"
+        label="title"
+        :searchable="true"
+        :allow-empty="false"
+        placeholder="Pilih Manga"
+        :close-on-select="true"
+        :clear-on-select="false"
+        :multiple="false"
+        class="mt-1 block w-full"
+      ></multiselect>
+      <p v-if="validation.manga_id" class="text-red-500 text-sm mt-1">{{ validation.manga_id[0] }}</p>
+    </div>
+
+
       </div>
 
       <!-- Chapter Number -->
@@ -215,7 +220,7 @@ export default {
   let formData = new FormData();
   formData.append('image', this.chapter.image);
   formData.append('title', this.chapter.title);
-  formData.append('manga_id', this.chapter.manga_id);
+  formData.append('manga_id', this.chapter.manga_id.id || this.chapter.manga_id);
   formData.append('chapter_number', this.chapter.chapter_number);
 
   // Append content based on the selected content type

@@ -128,18 +128,24 @@
             :key="item.id"
             class="flex flex-col items-start"
           >
-            <div class="relative w-full">
-              <img
-                :src="item.image"
-                :alt="'Cover image of ' + item.title"
-                class="w-full h-72 object-cover rounded-lg shadow-lg"
-              />
+            <!-- Wrap the image with nuxt-link -->
+            <nuxt-link
+              :to="{ name: 'manga-slug', params: { slug: item.slug } }"
+              class="relative w-full"
+            >
+            <v-img
+            :src="getCurrentImage(item)"
+            :lazy-src="item.image"
+            :alt="item.title"
+            class="w-full h-72 object-cover rounded-lg shadow-lg"
+          ></v-img>
               <span class="absolute bottom-3 right-3 bg-blue-600 text-sm text-white font-bold px-3 py-1 rounded">
                 {{ item.type.name }}
               </span>
-            </div>
+            </nuxt-link>
+
             <div class="w-full mt-3">
-              <nuxt-link :to="{name: 'manga-slug', params: {slug: item.slug}}" class="text-lg text-white font-semibold truncate">
+              <nuxt-link :to="{ name: 'manga-slug', params: { slug: item.slug } }" class="text-lg text-white font-semibold truncate">
                 {{ item.title | truncate(15) }}
               </nuxt-link>
               <div class="flex items-center justify-between text-sm mt-2 text-gray-400">
@@ -150,6 +156,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -201,6 +208,8 @@ export default {
       return {
         manga: mangaDetails.data,
         youMayAlsoLike, // Show mangas with the same genre or fallback to the latest 6 mangas excluding the current one
+        currentImageIndex: 0,
+      imageInterval: null,
       };
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -215,7 +224,32 @@ export default {
     getLastChapterNumber(chapters) {
       return Math.max(...chapters.map(chapter => chapter.chapter_number));
     },
+    getCurrentImage(item) {
+    const chapterImages = item.chapters.map(chapter => chapter.image).filter(Boolean);
+    if (chapterImages.length === 0) {
+      return item.image;
+    }
+    const images = [item.image, ...chapterImages];
+    return images[this.currentImageIndex % images.length];
   },
+  startImageRotation() {
+    this.imageInterval = setInterval(() => {
+      this.currentImageIndex++;
+    }, 2000); // Ganti gambar setiap 2 detik
+  },
+  stopImageRotation() {
+    clearInterval(this.imageInterval);
+  },
+  },
+  async mounted() {
+
+    // Mulai rotasi gambar
+  this.startImageRotation();
+  },
+  beforeDestroy() {
+  // Hentikan rotasi gambar saat komponen dihancurkan
+  this.stopImageRotation();
+},
 };
 </script>
 

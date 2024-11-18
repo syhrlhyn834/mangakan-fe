@@ -117,19 +117,21 @@ export default {
     };
   },
   async mounted() {
-    // Fetch data from API
-    try {
-      const genreResponse = await this.$axios.get('/api/web/genres');
-      const authorResponse = await this.$axios.get('/api/web/authors');
-      const typeResponse = await this.$axios.get('/api/web/types');
+  // Fetch data from API
+  try {
+    const genreResponse = await this.$axios.get('/api/web/genres');
+    const authorResponse = await this.$axios.get('/api/web/authors');
+    const typeResponse = await this.$axios.get('/api/web/types');
 
-      this.genres = genreResponse.data.data;
-      this.authors = authorResponse.data.data;
-      this.types = typeResponse.data.data;
-    } catch (error) {
-      console.error('Error fetching filter data:', error);
-    }
-  },
+    this.genres = genreResponse.data.data.sort((a, b) => {
+      return a.name.localeCompare(b.name); // Sort by genre name A-Z
+    });
+    this.authors = authorResponse.data.data;
+    this.types = typeResponse.data.data;
+  } catch (error) {
+    console.error('Error fetching filter data:', error);
+  }
+},
   methods: {
     emitSearch() {
       // Menyusun objek filter berdasarkan input dari pengguna

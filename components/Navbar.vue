@@ -1,13 +1,5 @@
 <template>
   <div class="bg-[#191b1d] text-white p-4 flex flex-col items-center md:flex-row md:justify-between sticky top-0 z-50">
-    <div class="flex items-center justify-center mb-2 md:hidden">
-      <img
-        v-if="logoImage"
-        :src="logoImage"
-        alt="Logo"
-        class="w-12 h-12"
-      />
-    </div>
     <div class="flex items-center justify-between w-full">
       <!-- Tombol Hamburger khusus desktop -->
       <button v-if="!isSidebarOpen" @click="$emit('toggle-sidebar')" class="mr-2 text-lg hidden md:block">
@@ -25,6 +17,7 @@
           type="text"
           placeholder="Cari Judul/Genre/Series/Character/Author/Group..."
           class="w-full p-2 rounded bg-gray-800 text-white"
+          @keyup.enter="search"
         />
       </div>
 
