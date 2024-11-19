@@ -100,7 +100,7 @@ css: [
         login: '/login',
         logout: '/login',
         callback: '/login',
-        home: '/admin/dashboard'
+        home: '/index'
     }
   },
 
