@@ -181,26 +181,34 @@ export default {
       this.isMenuOpen = !this.isMenuOpen;
     },
     async fetchMangaData() {
-      try {
-        const slug = this.$route.params.slug;
-        const response = await this.$axios.get(`/api/web/chapters/${slug}`);
-        if (response.data.success) {
-          this.mangaData = response.data.data.manga;
-          this.selectedChapter = response.data.data.id; // Select the current chapter
-          this.updateChapterNavigation();
-          this.loadChapterData();
-        }
-      } catch (error) {
-        console.error('Error fetching chapter data:', error);
-      }
-    },
-    updateChapterNavigation() {
-      const currentIndex = this.mangaData.chapters.findIndex(ch => ch.id === this.selectedChapter);
-
-      // Update prev and next chapter slugs for navigation
+  try {
+    const slug = this.$route.params.slug;
+    const response = await this.$axios.get(`/api/web/chapters/${slug}`);
+    if (response.data.success) {
+      this.mangaData = response.data.data.manga;
+      console.log(this.mangaData); // Log mangaData untuk memastikan data ada
+      this.selectedChapter = response.data.data.id; // Select the current chapter
+      this.updateChapterNavigation();
+      this.loadChapterData();
+    }
+  } catch (error) {
+    console.error('Error fetching chapter data:', error);
+  }
+},
+updateChapterNavigation() {
+  if (this.selectedChapter) {
+    const currentIndex = this.mangaData.chapters.findIndex(ch => ch.id === this.selectedChapter);
+    if (currentIndex !== -1) {
       this.prevChapterSlug = currentIndex > 0 ? this.mangaData.chapters[currentIndex - 1].slug : null;
       this.nextChapterSlug = currentIndex < this.mangaData.chapters.length - 1 ? this.mangaData.chapters[currentIndex + 1].slug : null;
-    },
+    } else {
+      console.error('Chapter not found for selectedChapter:', this.selectedChapter);
+    }
+  } else {
+    console.error('selectedChapter is not defined');
+  }
+}
+,
     async loadChapterData() {
       const chapter = this.mangaData.chapters.find(ch => ch.id === this.selectedChapter);
       if (chapter) {
