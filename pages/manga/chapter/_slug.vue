@@ -184,28 +184,37 @@ export default {
   try {
     const slug = this.$route.params.slug;
     const response = await this.$axios.get(`/api/web/chapters/${slug}`);
+    console.log('Fetched manga data:', response.data);  // Log the full response to check
+
     if (response.data.success) {
+      // Assign the data correctly
       this.mangaData = response.data.data.manga;
-      console.log(this.mangaData); // Log mangaData untuk memastikan data ada
-      this.selectedChapter = response.data.data.id; // Select the current chapter
-      this.updateChapterNavigation();
-      this.loadChapterData();
+      console.log('Manga data:', this.mangaData);  // Log manga data to check its structure
+
+      // Ensure chapters is an array and exists
+      if (Array.isArray(this.mangaData.chapters)) {
+        this.selectedChapter = response.data.data.id;  // Set the selected chapter
+        this.updateChapterNavigation();  // Update navigation
+        this.loadChapterData();  // Load chapter data
+      } else {
+        console.error('Chapters data is missing or malformed');
+      }
     }
   } catch (error) {
     console.error('Error fetching chapter data:', error);
   }
 },
 updateChapterNavigation() {
-  if (this.selectedChapter) {
+  if (this.mangaData && Array.isArray(this.mangaData.chapters)) {
     const currentIndex = this.mangaData.chapters.findIndex(ch => ch.id === this.selectedChapter);
     if (currentIndex !== -1) {
       this.prevChapterSlug = currentIndex > 0 ? this.mangaData.chapters[currentIndex - 1].slug : null;
       this.nextChapterSlug = currentIndex < this.mangaData.chapters.length - 1 ? this.mangaData.chapters[currentIndex + 1].slug : null;
     } else {
-      console.error('Chapter not found for selectedChapter:', this.selectedChapter);
+      console.error('Selected chapter not found in chapters array');
     }
   } else {
-    console.error('selectedChapter is not defined');
+    console.error('Chapters data is not available or malformed');
   }
 }
 ,
