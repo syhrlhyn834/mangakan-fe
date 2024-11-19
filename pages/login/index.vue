@@ -103,7 +103,7 @@ export default {
         // Delay redirect to admin dashboard
         setTimeout(() => {
           this.$router.push({
-            name: '/index',
+            name: '/admin/dashboard',
           });
         }, 1500); // Redirect after 1 seconds
       } catch (error) {

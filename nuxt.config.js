@@ -6,6 +6,13 @@ export default {
 
   // SSR
   ssr: true,
+
+  // Server configuration
+  server: {
+    port: 3001, // Port yang akan digunakan oleh Nuxt.js
+    host: '0.0.0.0', // Host untuk menerima koneksi eksternal (opsional)
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     htmlAttrs: {
@@ -100,7 +107,7 @@ css: [
         login: '/login',
         logout: '/login',
         callback: '/login',
-        home: '/index'
+        home: '/admin/dashboard'
     }
   },
 
