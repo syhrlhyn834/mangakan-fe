@@ -11,6 +11,7 @@
 import Sidebar from '~/components/Sidebar.vue';
 
 export default {
+  middleware: 'auth',
   components: {
     Sidebar
   },
