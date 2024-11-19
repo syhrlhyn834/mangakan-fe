@@ -184,7 +184,7 @@ export default {
     async fetchMangaData() {
       try {
         const slug = this.$route.params.slug;
-        const response = await this.$axios.get(/api/web/chapters/${slug});
+        const response = await this.$axios.get(`/api/web/chapters/${slug}`);
         if (response.data.success) {
           this.mangaData = response.data.data.manga;
           this.selectedChapter = response.data.data.id; // Select the current chapter
