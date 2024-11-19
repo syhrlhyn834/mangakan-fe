@@ -153,9 +153,9 @@ export default {
 
   async mounted() {
     try {
-      const chapterResponse = await this.$axios.get('/api/admin/mangas');
-      if (chapterResponse.data && chapterResponse.data.data && Array.isArray(chapterResponse.data.data.data)) {
-        this.mangas = chapterResponse.data.data.data; // Corrected to use mangas
+      const chapterResponse = await this.$axios.get('/api/admin/mangasView');
+      if (chapterResponse.data && chapterResponse.data.data && Array.isArray(chapterResponse.data.data)) {
+        this.mangas = chapterResponse.data.data; // Corrected to use mangas
       } else {
         console.error('Invalid response structure for mangas:', chapterResponse.data);
       }

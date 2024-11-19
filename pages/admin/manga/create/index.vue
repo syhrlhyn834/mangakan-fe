@@ -207,20 +207,20 @@ export default {
   async mounted() {
     try {
       const [authorsResponse, groupsResponse, typesResponse, seriesResponse, genresResponse, charactersResponse] = await Promise.all([
-        this.$axios.get('/api/admin/authors'),
-        this.$axios.get('/api/admin/groups'),
-        this.$axios.get('/api/admin/types'),
-        this.$axios.get('/api/admin/series'),
-        this.$axios.get('/api/admin/genres'),
-        this.$axios.get('/api/admin/characters'),
+        this.$axios.get('/api/admin/authorsView'),
+        this.$axios.get('/api/admin/groupsView'),
+        this.$axios.get('/api/admin/typesView'),
+        this.$axios.get('/api/admin/seriesView'),
+        this.$axios.get('/api/admin/genresView'),
+        this.$axios.get('/api/admin/charactersView'),
       ]);
 
-      this.author = authorsResponse.data?.data?.data || [];
-      this.groups = groupsResponse.data?.data?.data || [];
-      this.types = typesResponse.data?.data?.data || [];
-      this.series = seriesResponse.data?.data?.data || [];
-      this.genres = genresResponse.data?.data?.data || [];
-      this.characters = charactersResponse.data?.data?.data || [];
+      this.author = authorsResponse.data?.data || [];
+      this.groups = groupsResponse.data?.data || [];
+      this.types = typesResponse.data?.data || [];
+      this.series = seriesResponse.data?.data || [];
+      this.genres = genresResponse.data?.data || [];
+      this.characters = charactersResponse.data?.data || [];
     } catch (error) {
       console.error('Error fetching data:', error);
     }

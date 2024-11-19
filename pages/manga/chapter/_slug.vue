@@ -30,37 +30,38 @@
 
    <!-- PDF Viewer -->
    <div class="flex overflow-hidden bg-gray-900">
-  <!-- Single Page Mode -->
-  <div
-    v-if="mode === 'single'"
-    class="relative h-screen w-screen flex items-center justify-center"
-    ref="singlePageContainer"
-    @click="handleSinglePageClick"
-  >
-    <canvas
-  ref="pdfCanvas"
-  class="mx-auto shadow-lg"
-  style="width: 100%; height: auto; max-height: 100%;"
-></canvas>
-
-  </div>
-</div>
-  <div class="flex-grow overflow-hidden bg-gray-900">
-  <!-- Vertical Scroll Mode -->
-  <div v-if="mode === 'vertical'" class="overflow-y-auto h-full w-full" ref="verticalScrollContainer">
+    <!-- Single Page Mode -->
     <div
-      v-for="page in renderedPages"
-      :key="page"
-      class="flex justify-center"
+      v-if="mode === 'single'"
+      class="relative h-screen w-screen flex items-center justify-center"
+      ref="singlePageContainer"
+      @click="handleSinglePageClick"
     >
       <canvas
-        ref="verticalCanvas"
-        :data-page="page"
-        class="shadow-lg"
-        style="width: auto; max-width: 100%; height: auto;"
-      ></canvas>
+    ref="pdfCanvas"
+    class="mx-auto shadow-lg"
+    style="width: auto; max-width: 100%; height: auto;"
+  ></canvas>
+
     </div>
   </div>
+    <div class="flex-grow overflow-hidden bg-gray-900">
+    <!-- Vertical Scroll Mode -->
+    <div v-if="mode === 'vertical'" class="overflow-y-auto h-full w-full" ref="verticalScrollContainer">
+      <div
+        v-for="page in renderedPages"
+        :key="page"
+        class="flex justify-center"
+      >
+        <canvas
+          ref="verticalCanvas"
+          :data-page="page"
+          class="shadow-lg"
+          style="width: auto; max-width: 100%; height: auto;"
+        ></canvas>
+  </div>
+</div>
+
 </div>
   </div>
 </template>

@@ -248,54 +248,54 @@ this.$axios.get(`/api/admin/mangas/${this.$route.params.id}`)
   })
 
 //fetching data authors
-this.$axios.get('/api/admin/authors')
+this.$axios.get('/api/admin/authorsView')
 
   .then(response => {
 
     //assing response data to state "authors"
-    this.authors = response.data.data.data
+    this.authors = response.data.data
   })
 
 //fetching data types
-this.$axios.get('/api/admin/types')
+this.$axios.get('/api/admin/typesView')
 
   .then(response => {
 
     //assing response data to state "types"
-    this.types = response.data.data.data
+    this.types = response.data.data
   })
 
   //fetching data characters
-this.$axios.get('/api/admin/characters')
+this.$axios.get('/api/admin/charactersView')
 
 .then(response => {
 
   //assing response data to state "series"
-  this.characters = response.data.data.data
+  this.characters = response.data.data
 })
 //fetching data series
-this.$axios.get('/api/admin/series')
+this.$axios.get('/api/admin/seriesView')
 
   .then(response => {
 
     //assing response data to state "series"
-    this.series = response.data.data.data
+    this.series = response.data.data
   })
   //fetching data genres
-this.$axios.get('/api/admin/genres')
+this.$axios.get('/api/admin/genresView')
 
 .then(response => {
 
   //assing response data to state "genres"
-  this.genres = response.data.data.data
+  this.genres = response.data.data
 })
 //fetching data groups
-this.$axios.get('/api/admin/groups')
+this.$axios.get('/api/admin/groupsView')
 
   .then(response => {
 
     //assing response data to state "groups"
-    this.groups = response.data.data.data
+    this.groups = response.data.data
   })
 
 },

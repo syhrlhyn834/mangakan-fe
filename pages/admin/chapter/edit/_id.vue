@@ -151,9 +151,9 @@ export default {
   async mounted() {
   try {
     // Mengambil daftar manga
-    const mangasResponse = await this.$axios.get('/api/admin/mangas');
-    if (mangasResponse.data && mangasResponse.data.data && Array.isArray(mangasResponse.data.data.data)) {
-      this.mangas = mangasResponse.data.data.data;
+    const mangasResponse = await this.$axios.get('/api/admin/mangasView');
+    if (mangasResponse.data && mangasResponse.data.data && Array.isArray(mangasResponse.data.data)) {
+      this.mangas = mangasResponse.data.data;
     } else {
       console.error('Invalid response structure for mangas:', mangasResponse.data);
     }
