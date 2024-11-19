@@ -174,7 +174,7 @@ export default {
   data() {
     return {
       headers: {
-        image2: '',
+        image: '',
         name: ''
       },
     };
@@ -208,7 +208,7 @@ export default {
       // Fetch headers data
       const headerResponse = await this.$axios.get(`/api/admin/headers/1`);
       this.headers.name = headerResponse.data.data.name;
-      this.headers.image2 = headerResponse.data.data.image2;
+      this.headers.image = headerResponse.data.data.image;
     } catch (error) {
       console.error('Error fetching headers:', error);
     }
