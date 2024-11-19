@@ -7,12 +7,13 @@
 
         <!-- Menu Button to Open/Close -->
         <button
-          @click="toggleMenu"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-md mb-4"
-        >
-          <i class="fas fa-bars"></i>
-          Menu
-        </button>
+  @click="toggleMenu"
+  class="inline-flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-md mb-4 hover:bg-[#ff6740]"
+>
+  <i class="fas fa-bars"></i>
+  Menu
+</button>
+
       </div>
 
 
@@ -181,46 +182,26 @@ export default {
       this.isMenuOpen = !this.isMenuOpen;
     },
     async fetchMangaData() {
-  try {
-    const slug = this.$route.params.slug;  // Get the slug from route parameters
-    const response = await this.$axios.get(`/api/web/chapters/${slug}`);
-
-    if (response.data.success) {
-      // Extract the manga data
-      this.mangaData = response.data.data.manga;
-      console.log('Manga data:', this.mangaData);  // Log manga data to check its structure
-
-      // Ensure chapters array is present and is an array
-      if (Array.isArray(this.mangaData.chapters) && this.mangaData.chapters.length > 0) {
-        console.log('Chapters data:', this.mangaData.chapters);  // Log chapters data
-
-        this.selectedChapter = response.data.data.id;  // Set the selected chapter
-        this.updateChapterNavigation();  // Update chapter navigation
-        this.loadChapterData();  // Load the selected chapter content
-      } else {
-        console.error('Chapters array is empty or malformed');
+      try {
+        const slug = this.$route.params.slug;
+        const response = await this.$axios.get(/api/web/chapters/${slug});
+        if (response.data.success) {
+          this.mangaData = response.data.data.manga;
+          this.selectedChapter = response.data.data.id; // Select the current chapter
+          this.updateChapterNavigation();
+          this.loadChapterData();
+        }
+      } catch (error) {
+        console.error('Error fetching chapter data:', error);
       }
-    } else {
-      console.error('Failed to fetch manga data:', response.data.message);
-    }
-  } catch (error) {
-    console.error('Error fetching chapter data:', error);
-  }
-},
-updateChapterNavigation() {
-  if (this.mangaData && Array.isArray(this.mangaData.chapters)) {
-    const currentIndex = this.mangaData.chapters.findIndex(ch => ch.id === this.selectedChapter);
-    if (currentIndex !== -1) {
+    },
+    updateChapterNavigation() {
+      const currentIndex = this.mangaData.chapters.findIndex(ch => ch.id === this.selectedChapter);
+
+      // Update prev and next chapter slugs for navigation
       this.prevChapterSlug = currentIndex > 0 ? this.mangaData.chapters[currentIndex - 1].slug : null;
       this.nextChapterSlug = currentIndex < this.mangaData.chapters.length - 1 ? this.mangaData.chapters[currentIndex + 1].slug : null;
-    } else {
-      console.error('Selected chapter not found in chapters array');
-    }
-  } else {
-    console.error('Chapters data is not available or malformed');
-  }
-}
-,
+    },
     async loadChapterData() {
       const chapter = this.mangaData.chapters.find(ch => ch.id === this.selectedChapter);
       if (chapter) {
@@ -374,7 +355,6 @@ updateChapterNavigation() {
   },
 };
 </script>
-
 
 
 
