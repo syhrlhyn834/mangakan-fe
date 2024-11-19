@@ -182,23 +182,26 @@ export default {
     },
     async fetchMangaData() {
   try {
-    const slug = this.$route.params.slug;
+    const slug = this.$route.params.slug;  // Get the slug from route parameters
     const response = await this.$axios.get(`/api/web/chapters/${slug}`);
-    console.log('Fetched manga data:', response.data);  // Log the full response to check
 
     if (response.data.success) {
-      // Assign the data correctly
+      // Extract the manga data
       this.mangaData = response.data.data.manga;
       console.log('Manga data:', this.mangaData);  // Log manga data to check its structure
 
-      // Ensure chapters is an array and exists
-      if (Array.isArray(this.mangaData.chapters)) {
+      // Ensure chapters array is present and is an array
+      if (Array.isArray(this.mangaData.chapters) && this.mangaData.chapters.length > 0) {
+        console.log('Chapters data:', this.mangaData.chapters);  // Log chapters data
+
         this.selectedChapter = response.data.data.id;  // Set the selected chapter
-        this.updateChapterNavigation();  // Update navigation
-        this.loadChapterData();  // Load chapter data
+        this.updateChapterNavigation();  // Update chapter navigation
+        this.loadChapterData();  // Load the selected chapter content
       } else {
-        console.error('Chapters data is missing or malformed');
+        console.error('Chapters array is empty or malformed');
       }
+    } else {
+      console.error('Failed to fetch manga data:', response.data.message);
     }
   } catch (error) {
     console.error('Error fetching chapter data:', error);
