@@ -66,7 +66,11 @@
 export default {
   //layout
   layout: 'admin',
-
+  head() {
+  return {
+    title: 'Tambah User',
+  };
+},
 
   data() {
       return {

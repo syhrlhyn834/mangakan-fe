@@ -148,7 +148,11 @@
 <script>
 export default {
   layout: 'admin',
-
+  head() {
+  return {
+    title: 'Manga',
+  };
+},
   data() {
     return {
       search: '',

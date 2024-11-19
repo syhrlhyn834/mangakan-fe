@@ -181,6 +181,11 @@
 <script>
 export default {
   layout: 'admin',
+  head() {
+  return {
+    title: 'Tambah Manga',
+  };
+},
 
   data() {
     return {

@@ -100,7 +100,11 @@
 <script>
 export default {
   layout: 'admin',
-
+  head() {
+  return {
+    title: 'Series',
+  };
+},
   data() {
     return {
       search: '',

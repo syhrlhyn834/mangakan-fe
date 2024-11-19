@@ -38,6 +38,11 @@
 
 <script>
 export default {
+  head() {
+  return {
+    title: 'Daftar Character',
+  };
+},
   async asyncData({ $axios }) {
     try {
       const response = await $axios.get('/api/web/characters');

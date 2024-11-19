@@ -131,7 +131,11 @@
 <script>
 export default {
   layout: 'admin',
-
+  head() {
+  return {
+    title: 'Edit Chapter',
+  };
+},
   data() {
   return {
     chapter: {

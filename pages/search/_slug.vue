@@ -84,7 +84,11 @@
 
 <script>
 export default {
-  name: 'SearchSlug',
+  head() {
+  return {
+    title: this.searchQuery,
+  };
+},
   filters: {
     truncate(value, length) {
       if (!value) return '';

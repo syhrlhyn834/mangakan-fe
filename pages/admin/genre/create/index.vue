@@ -37,6 +37,11 @@ export default {
   //layout
   layout: 'admin',
 
+  head() {
+  return {
+    title: 'Tambah Genre',
+  };
+},
 
   data() {
       return {

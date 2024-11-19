@@ -84,7 +84,11 @@
 
 <script>
 export default {
-  name: 'All',
+  head() {
+  return {
+    title: this.genreName,
+  };
+},
   filters: {
     truncate(value, length) {
       if (!value) return '';

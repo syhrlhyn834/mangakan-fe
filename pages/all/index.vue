@@ -78,7 +78,11 @@
 import FilterSearch from '@/components/FilterSearch.vue';
 
 export default {
-  name: 'All',
+  head() {
+  return {
+    title: 'Semua Manga',
+  };
+},
   filters: {
     truncate(value, length) {
       if (!value) return '';

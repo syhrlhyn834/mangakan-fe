@@ -100,6 +100,11 @@
 <script>
 export default {
   layout: 'admin',
+  head() {
+  return {
+    title: 'Genre',
+  };
+},
 
   data() {
     return {

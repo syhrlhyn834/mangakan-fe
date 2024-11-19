@@ -74,7 +74,11 @@
 </template>
 <script>
 export default {
-  name: 'All',
+  head() {
+  return {
+    title: 'Daftar Manga Finished',
+  };
+},
   filters: {
     truncate(value, length) {
       if (!value) return '';

@@ -37,7 +37,11 @@ export default {
     //layout
     layout: 'admin',
 
-
+    head() {
+  return {
+    title: 'Edit Series',
+  };
+},
     data() {
       return {
         //state series

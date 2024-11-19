@@ -67,7 +67,11 @@ export default {
     //layout
     layout: 'admin',
 
-
+    head() {
+  return {
+    title: 'Edit User',
+  };
+},
     data() {
       return {
         //state user

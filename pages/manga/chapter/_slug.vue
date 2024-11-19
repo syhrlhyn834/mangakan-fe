@@ -114,7 +114,7 @@
       <!-- Single Page Mode -->
       <div
         v-if="mode === 'single'"
-        class="relative h-auto w-screen flex items-center justify-center"
+        class="relative h-screen w-screen flex items-center justify-center"
         ref="singlePageContainer"
         @click="handleSinglePageClick"
       >
@@ -143,6 +143,11 @@
 
 <script>
 export default {
+  head() {
+  return {
+    title: this.chapterTitle,
+  };
+},
   data() {
     return {
       mode: 'single', // Mode baca: 'single' atau 'vertical'

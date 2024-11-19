@@ -37,7 +37,11 @@ export default {
   //layout
   layout: 'admin',
 
-
+  head() {
+  return {
+    title: 'Tambah Type',
+  };
+},
   data() {
       return {
           //state type

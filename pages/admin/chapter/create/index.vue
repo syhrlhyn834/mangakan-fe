@@ -134,6 +134,11 @@
 <script>
 export default {
   layout: 'admin',
+  head() {
+  return {
+    title: 'Tambah Chapter',
+  };
+},
 
   data() {
   return {

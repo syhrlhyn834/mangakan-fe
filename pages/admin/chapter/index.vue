@@ -118,6 +118,12 @@
 <script>
 export default {
   layout: 'admin',
+  head() {
+  return {
+    title: 'Chapter',
+  };
+},
+
 
   data() {
     return {

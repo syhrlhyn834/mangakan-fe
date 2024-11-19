@@ -184,7 +184,11 @@
 <script>
 export default {
   layout: 'admin',
-
+  head() {
+  return {
+    title: 'Edit Manga',
+  };
+},
   data() {
   return {
     manga: {

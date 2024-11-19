@@ -36,7 +36,11 @@
 export default {
   //layout
   layout: 'admin',
-
+  head() {
+  return {
+    title: 'Tambah Group',
+  };
+},
 
   data() {
       return {

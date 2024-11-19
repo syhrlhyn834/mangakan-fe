@@ -38,6 +38,11 @@
 
 <script>
 export default {
+  head() {
+  return {
+    title: 'Daftar Author',
+  };
+},
   async asyncData({ $axios }) {
     try {
       const response = await $axios.get('/api/web/authors');

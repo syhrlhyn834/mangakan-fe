@@ -163,6 +163,11 @@
 
 <script>
 export default {
+  head() {
+  return {
+    title: this.manga.title,
+  };
+},
   filters: {
     truncate(value, length) {
       if (!value) return '';

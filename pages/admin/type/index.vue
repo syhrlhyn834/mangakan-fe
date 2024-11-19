@@ -101,6 +101,12 @@
 export default {
   layout: 'admin',
 
+  head() {
+  return {
+    title: 'Type',
+  };
+},
+
   data() {
     return {
       search: '',
