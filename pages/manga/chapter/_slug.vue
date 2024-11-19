@@ -16,7 +16,6 @@
 
       </div>
 
-
       <!-- Menu Section -->
       <div v-if="isMenuOpen" class="menu-container transition-all duration-300">
         <div class="flex flex-wrap gap-2">
@@ -137,6 +136,53 @@
         ></canvas>
       </div>
     </div>
+
+    <!-- Navigational Controls at the bottom -->
+<div v-if="mode === 'vertical'" class="fixed-bottom left-0 right-0 bg-gray-800 p-4 text-white">
+  <!-- Wrapper for Prev and Next Buttons -->
+  <div class="flex justify-between gap-4">
+    <!-- Prev Chapter with Icon -->
+    <nuxt-link
+      v-if="prevChapterSlug"
+      :to="{ name: 'manga-chapter-slug', params: { slug: prevChapterSlug } }"
+      class="px-4 py-2 bg-gray-700 text-white rounded-md flex items-center gap-2"
+    >
+      <i class="fas fa-chevron-left"></i>
+      <span>Prev Chapter</span>
+    </nuxt-link>
+
+    <!-- Next Chapter with Icon -->
+    <nuxt-link
+      v-if="nextChapterSlug"
+      :to="{ name: 'manga-chapter-slug', params: { slug: nextChapterSlug } }"
+      class="px-4 py-2 bg-gray-700 text-white rounded-md flex items-center gap-2 justify-end"
+    >
+      <span>Next Chapter</span>
+      <i class="fas fa-chevron-right"></i>
+    </nuxt-link>
+  </div>
+
+  <!-- Chapter Dropdown with Icon -->
+  <div class="mt-4">
+    <label for="chapter-select" class="block text-sm font-medium text-white mb-2">Select Chapter</label>
+    <div class="relative">
+      <select
+        id="chapter-select"
+        v-model="selectedChapter"
+        @change="loadChapterData"
+        class="block w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ff6740] focus:border-transparent pr-10"
+      >
+        <option v-for="chapter in mangaData.chapters" :key="chapter.id" :value="chapter.id">
+          Chapter {{ chapter.chapter_number }}: {{ chapter.title }}
+        </option>
+      </select>
+      <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+        <i class="fas fa-chevron-down text-gray-400"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
   </div>
 </template>
 
