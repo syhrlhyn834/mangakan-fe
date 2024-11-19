@@ -32,7 +32,7 @@
     >
       <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
         <a href="/" class="flex items-center ps-2.5 mb-5">
-          <img :src="headers.image2" class="h-6 me-3 sm:h-7" alt="Logo" />
+          <img :src="headers.image" class="h-6 me-3 sm:h-7" alt="Logo" />
           <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">{{ headers.name }}</span>
         </a>
         <ul class="space-y-2 font-medium">
