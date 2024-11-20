@@ -117,11 +117,12 @@
         ref="singlePageContainer"
         @click="handleSinglePageClick"
       >
-        <canvas
-          ref="pdfCanvas"
-          class="mx-auto shadow-lg"
-          style="width: auto; max-width: 100%; height: auto;"
-        ></canvas>
+      <canvas
+      ref="pdfCanvas"
+      class="mx-auto shadow-lg"
+      style="max-width: 100%; max-height: 100%;"
+    ></canvas>
+
       </div>
     </div>
 
@@ -278,14 +279,24 @@ export default {
       }
     },
     async renderSinglePage(pageNumber) {
-      const page = await this.pdf.getPage(pageNumber);
-      const canvas = this.$refs.pdfCanvas;
-      const context = canvas.getContext('2d');
-      const viewport = page.getViewport({ scale: 1 });
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      page.render({ canvasContext: context, viewport }).promise;
-    },
+  const page = await this.pdf.getPage(pageNumber);
+  const canvas = this.$refs.pdfCanvas;
+  const context = canvas.getContext('2d');
+
+  // Hitung skala agar halaman tidak terpotong
+  const viewport = page.getViewport({ scale: 1 });
+  const scale = Math.min(
+    canvas.parentElement.clientWidth / viewport.width,
+    canvas.parentElement.clientHeight / viewport.height
+  );
+
+  const scaledViewport = page.getViewport({ scale });
+  canvas.width = scaledViewport.width;
+  canvas.height = scaledViewport.height;
+
+  // Render halaman PDF ke canvas
+  page.render({ canvasContext: context, viewport: scaledViewport }).promise;
+},
     async renderVerticalPages() {
       this.renderedPages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
       this.$nextTick(() => {
