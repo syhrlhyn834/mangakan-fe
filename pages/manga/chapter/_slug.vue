@@ -283,19 +283,34 @@ export default {
   const canvas = this.$refs.pdfCanvas;
   const context = canvas.getContext('2d');
 
-  // Hitung skala agar halaman tidak terpotong
+  // Ambil ukuran viewport asli dari halaman PDF
   const viewport = page.getViewport({ scale: 1 });
+
+  // Hitung skala untuk menyesuaikan ukuran layar
   const scale = Math.min(
     canvas.parentElement.clientWidth / viewport.width,
     canvas.parentElement.clientHeight / viewport.height
   );
 
-  const scaledViewport = page.getViewport({ scale });
+  // Gunakan device pixel ratio untuk resolusi tinggi
+  const devicePixelRatio = window.devicePixelRatio || 1;
+
+  // Terapkan skala akhir
+  const scaledViewport = page.getViewport({ scale: scale * devicePixelRatio });
+
+  // Sesuaikan ukuran canvas ke skala internal (untuk ketajaman)
   canvas.width = scaledViewport.width;
   canvas.height = scaledViewport.height;
 
+  // Tetapkan ukuran tampilan (CSS) agar tetap proporsional
+  canvas.style.width = `${scaledViewport.width / devicePixelRatio}px`;
+  canvas.style.height = `${scaledViewport.height / devicePixelRatio}px`;
+
   // Render halaman PDF ke canvas
-  page.render({ canvasContext: context, viewport: scaledViewport }).promise;
+  await page.render({
+    canvasContext: context,
+    viewport: scaledViewport,
+  }).promise;
 },
     async renderVerticalPages() {
       this.renderedPages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
@@ -435,5 +450,11 @@ export default {
   background: #777;
 }
 
+canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  image-rendering: crisp-edges; /* Untuk mencegah blur */
+}
 
 </style>
