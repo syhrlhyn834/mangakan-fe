@@ -19,9 +19,9 @@
   :alt="manga.title"
   class="w-full h-72 object-cover rounded-lg shadow-lg"
 ></v-img>
-            <span class="absolute bottom-3 right-3 bg-blue-600 text-sm text-white font-bold px-3 py-1 rounded">
-              {{ manga.type ? manga.type.name : 'Unknown Type' }}
-            </span>
+<span class="absolute bottom-3 right-3 bg-blue-600 text-sm text-white font-bold px-3 py-1 rounded">
+  {{ formatRelativeDate(manga.created_at) }}
+</span>
           </nuxt-link>
           <div class="w-full mt-3">
             <nuxt-link :to="{name: 'manga-slug', params: {slug: manga.slug}}" class="text-lg text-white font-semibold truncate">
@@ -128,6 +128,29 @@ export default {
   this.stopImageRotation();
 },
   methods: {
+    formatRelativeDate(date) {
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - new Date(date)) / 1000);
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+    const diffInMonths = Math.floor(diffInDays / 30);
+    const diffInYears = Math.floor(diffInDays / 365);
+
+    if (diffInSeconds < 60) {
+      return `${diffInSeconds} detik `;
+    } else if (diffInMinutes < 60) {
+      return `${diffInMinutes} menit `;
+    } else if (diffInHours < 24) {
+      return `${diffInHours} jam `;
+    } else if (diffInDays < 30) {
+      return `${diffInDays} hari `;
+    } else if (diffInMonths < 12) {
+      return `${diffInMonths} bulan`;
+    } else {
+      return `${diffInYears} tahun`;
+    }
+  },
 
     getCurrentImage(item) {
     const chapterImages = item.chapters.map(chapter => chapter.image).filter(Boolean);

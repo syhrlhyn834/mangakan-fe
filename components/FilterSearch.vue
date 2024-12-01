@@ -38,28 +38,6 @@
         </div>
       </div>
 
-      <!-- Type Filter -->
-      <div class="mb-4">
-        <span class="block text-sm font-medium text-white">Type</span>
-        <div class="mt-2 space-x-4">
-          <label class="inline-flex items-center">
-            <input type="radio" name="type" value="All" v-model="selectedType" class="form-radio text-[#ff6740]">
-            <span class="ml-2 text-white">All</span>
-          </label>
-          <label class="inline-flex items-center">
-            <input type="radio" name="type" value="Manga" v-model="selectedType" class="form-radio text-[#ff6740]">
-            <span class="ml-2 text-white">Manga</span>
-          </label>
-          <label class="inline-flex items-center">
-            <input type="radio" name="type" value="Manhwa" v-model="selectedType" class="form-radio text-[#ff6740]">
-            <span class="ml-2 text-white">Manhwa</span>
-          </label>
-          <label class="inline-flex items-center">
-            <input type="radio" name="type" value="Doujinshi" v-model="selectedType" class="form-radio text-[#ff6740]">
-            <span class="ml-2 text-white">Doujinshi</span>
-          </label>
-        </div>
-      </div>
 
       <!-- Order By Filter -->
       <div class="mb-4">
@@ -113,7 +91,6 @@ export default {
       selectedGenre: [], // Store selected genres
       genres: [], // Available genres
       authors: [], // Available authors
-      types: [] // Available types
     };
   },
   async mounted() {

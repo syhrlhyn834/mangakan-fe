@@ -74,12 +74,6 @@ export default {
             iconClass: 'w-8 h-8 text-gray-900 dark:text-white',
             iconPath: 'M3 7v10l7-5-7-5zm0 0h18M3 7l7 5-7 5m0 0h18'
           },
-          {
-            title: 'Total Type',
-            value: data.types,
-            iconClass: 'w-8 h-8 text-gray-900 dark:text-white',
-            iconPath: 'M3 7v10l7-5-7-5zm0 0h18M3 7l7 5-7 5m0 0h18'
-          },
         ]
       };
     } catch (error) {

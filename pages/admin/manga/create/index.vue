@@ -77,20 +77,6 @@
           <p v-if="validation.status" class="text-red-500 text-sm mt-1">{{ validation.status[0] }}</p>
         </div>
 
-        <!-- Type -->
-        <div>
-          <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
-          <multiselect
-            v-model="manga.types"
-            :options="types"
-            label="name"
-            track-by="id"
-            :multiple="false"
-            :searchable="true"
-            required
-          ></multiselect>
-          <p v-if="validation.type_id" class="text-red-500 text-sm mt-1">{{ validation.type_id[0] }}</p>
-        </div>
 
         <!-- Series -->
         <div>
@@ -200,7 +186,6 @@ export default {
       },
       author: [],
       groups: [],
-      types: [],
       series: [],
       genres: [],
       characters: [],
@@ -211,10 +196,9 @@ export default {
 
   async mounted() {
     try {
-      const [authorsResponse, groupsResponse, typesResponse, seriesResponse, genresResponse, charactersResponse] = await Promise.all([
+      const [authorsResponse, groupsResponse, seriesResponse, genresResponse, charactersResponse] = await Promise.all([
         this.$axios.get('/api/admin/authorsView'),
         this.$axios.get('/api/admin/groupsView'),
-        this.$axios.get('/api/admin/typesView'),
         this.$axios.get('/api/admin/seriesView'),
         this.$axios.get('/api/admin/genresView'),
         this.$axios.get('/api/admin/charactersView'),
@@ -222,7 +206,6 @@ export default {
 
       this.author = authorsResponse.data?.data || [];
       this.groups = groupsResponse.data?.data || [];
-      this.types = typesResponse.data?.data || [];
       this.series = seriesResponse.data?.data || [];
       this.genres = genresResponse.data?.data || [];
       this.characters = charactersResponse.data?.data || [];
@@ -264,7 +247,6 @@ export default {
 
       formData.append('author_id', this.manga.author ? this.manga.author.id : '');
       formData.append('group_id', this.manga.groups ? this.manga.groups.id : '');
-      formData.append('type_id', this.manga.types ? this.manga.types.id : '');
       formData.append('series_id', this.manga.series ? this.manga.series.id : '');
 
       try {

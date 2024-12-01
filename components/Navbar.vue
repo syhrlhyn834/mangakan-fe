@@ -51,25 +51,6 @@
                 <i class="fas fa-home mr-2"></i> Home
               </nuxt-link>
             </li>
-            <li class="mb-4">
-              <nuxt-link @click.native="closeMenu" class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="/all">
-                <i class="fas fa-layer-group mr-2"></i> All list
-              </nuxt-link>
-            </li>
-            <li class="mb-4">
-              <span @click="toggleTypesMenu" class="cursor-pointer flex items-center text-white hover:bg-[#ff6740] p-2 rounded">
-                <i class="fas fa-list mr-2"></i>
-                Types
-                <i :class="['fas', 'submenu-icon', isTypesMenuOpen ? 'fa-chevron-down' : 'fa-chevron-right']" class="ml-2 transition-transform"></i>
-              </span>
-              <transition name="expand">
-                <ul v-if="isTypesMenuOpen" class="ml-4 transition-all duration-300 overflow-hidden" :style="{ maxHeight: isTypesMenuOpen ? '200px' : '0' }">
-                  <li class="mb-2"><nuxt-link @click.native="closeMenu" class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="/types/doujinshi"><i class="fas fa-tag mr-2"></i> Doujinshi</nuxt-link></li>
-                  <li class="mb-2"><nuxt-link @click.native="closeMenu" class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="/types/manga"><i class="fas fa-tag mr-2"></i> Manga</nuxt-link></li>
-                  <li class="mb-2"><nuxt-link @click.native="closeMenu" class="flex text-white items-center hover:bg-[#ff6740] p-2 rounded" to="/types/manhwa"><i class="fas fa-tag mr-2"></i> Manhwa</nuxt-link></li>
-                </ul>
-              </transition>
-            </li>
             <li class="mb-4"><nuxt-link @click.native="closeMenu" class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="/genre"><i class="fas fa-tags mr-2"></i> Genres</nuxt-link></li>
             <li class="mb-4"><nuxt-link @click.native="closeMenu" class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="/author"><i class="fas fa-pencil-alt mr-2"></i> Authors</nuxt-link></li>
             <li class="mb-4"><nuxt-link @click.native="closeMenu" class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="/group"><i class="fas fa-users mr-2"></i> Groups</nuxt-link></li>

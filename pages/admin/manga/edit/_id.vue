@@ -80,20 +80,7 @@
           <p v-if="validation.group" class="text-red-500 text-sm mt-1">{{ validation.group[0] }}</p>
         </div>
 
-        <!-- Type -->
-        <div>
-          <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
-          <multiselect
-            v-model="manga.type_id"
-            :options="types"
-            label="name"
-            track-by="id"
-            :multiple="false"
-            :searchable="true"
-            required
-          ></multiselect>
-          <p v-if="validation.type" class="text-red-500 text-sm mt-1">{{ validation.type[0] }}</p>
-        </div>
+
 
         <!-- Series -->
         <div>
@@ -196,7 +183,6 @@ export default {
       description: '',
       status: '',
       author_id: '', // Fixed key from authors_id to author_id for consistency
-      type_id: '',   // Fixed key from types_id to type_id for consistency
       characters: [],
       series_id: '',
       genres: [],
@@ -207,7 +193,6 @@ export default {
     imagePreview: null,
     authors: [],  // Fixed: initialized authors
     groups: [],   // Fixed: initialized groups
-    types: [],    // Fixed: initialized types
     series: [],   // Fixed: initialized series
     genres: [],   // Fixed: initialized genres
     characters: [], // Fixed: initialized characters
@@ -232,8 +217,7 @@ this.$axios.get(`/api/admin/mangas/${this.$route.params.id}`)
     //assing response data to state "manga.authors"
     this.manga.author_id = response.data.data.author
 
-    //assing response data to state "manga.types"
-    this.manga.type_id = response.data.data.type
+
 
     //assing response data to state "manga.characters"
     this.manga.characters = response.data.data.characters
@@ -260,14 +244,6 @@ this.$axios.get('/api/admin/authorsView')
     this.authors = response.data.data
   })
 
-//fetching data types
-this.$axios.get('/api/admin/typesView')
-
-  .then(response => {
-
-    //assing response data to state "types"
-    this.types = response.data.data
-  })
 
   //fetching data characters
 this.$axios.get('/api/admin/charactersView')
@@ -335,7 +311,6 @@ this.$axios.get('/api/admin/groupsView')
         formData.append('description', this.manga.description)
         formData.append('status', this.manga.status)
         formData.append('author_id', this.manga.author_id ? this.manga.author_id.id : '')
-        formData.append('type_id', this.manga.type_id ? this.manga.type_id.id : '')
         formData.append('series_id', this.manga.series_id ? this.manga.series_id.id : '')
         formData.append('group_id', this.manga.group_id ? this.manga.group_id.id : '')
         formData.append("_method", "PATCH")

@@ -16,7 +16,9 @@
   :alt="manga.title"
   class="w-full h-72 object-cover rounded-lg shadow-lg"
 ></v-img>
-            <span class="absolute bottom-3 right-3 bg-blue-600 text-sm text-white font-bold px-3 py-1 rounded">{{ manga.type.name }}</span>
+<span class="absolute bottom-3 right-3 bg-blue-600 text-sm text-white font-bold px-3 py-1 rounded">
+  {{ formatRelativeDate(manga.created_at) }}
+</span>
           </nuxt-link>
           <div class="w-full mt-3">
             <nuxt-link :to="{name: 'manga-slug', params: {slug: manga.slug}}" class="text-lg text-white font-semibold truncate">
@@ -100,6 +102,62 @@ export default {
     },
   },
   methods: {
+    formatRelativeDate(date) {
+    // Cek apakah format tanggal sesuai dengan yang diharapkan
+    const regex = /([A-Za-z]+), (\d{2}) ([A-Za-z]+) (\d{4}), (\d{2}):(\d{2}) WIB/;
+    const match = date.match(regex);
+
+    if (match) {
+        // Ambil bagian-bagian dari tanggal yang diparse
+        const [_, dayName, day, monthName, year, hour, minute] = match;
+
+        // Daftar bulan dalam bahasa Indonesia
+        const monthNames = {
+            "Januari": 0, "Februari": 1, "Maret": 2, "April": 3, "Mei": 4,
+            "Juni": 5, "Juli": 6, "Agustus": 7, "September": 8, "Oktober": 9,
+            "November": 10, "Desember": 11
+        };
+
+        const monthIndex = monthNames[monthName];
+
+        if (monthIndex === undefined) {
+            return "Bulan tidak valid"; // Menangani bulan yang tidak sesuai
+        }
+
+        // Buat string untuk tanggal dalam format yang bisa diterima oleh JavaScript Date
+        const formattedDate = new Date(`${year}-${monthIndex + 1}-${day}T${hour}:${minute}:00+07:00`);
+
+        // Periksa apakah tanggal sudah valid
+        if (isNaN(formattedDate)) {
+            return "Tanggal tidak valid";
+        }
+
+        // Lanjutkan dengan menghitung selisih waktu
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - formattedDate) / 1000);
+        const diffInMinutes = Math.floor(diffInSeconds / 60);
+        const diffInHours = Math.floor(diffInMinutes / 60);
+        const diffInDays = Math.floor(diffInHours / 24);
+        const diffInMonths = Math.floor(diffInDays / 30);
+        const diffInYears = Math.floor(diffInDays / 365);
+
+        if (diffInSeconds < 60) {
+            return `${diffInSeconds} detik yang lalu`;
+        } else if (diffInMinutes < 60) {
+            return `${diffInMinutes} menit yang lalu`;
+        } else if (diffInHours < 24) {
+            return `${diffInHours} jam yang lalu`;
+        } else if (diffInDays < 30) {
+            return `${diffInDays} hari yang lalu`;
+        } else if (diffInMonths < 12) {
+            return `${diffInMonths} bulan yang lalu`;
+        } else {
+            return `${diffInYears} tahun yang lalu`;
+        }
+    } else {
+        return "Format tanggal tidak sesuai";
+    }
+},
     getCurrentImage(item) {
     const chapterImages = item.chapters.map(chapter => chapter.image).filter(Boolean);
     if (chapterImages.length === 0) {
