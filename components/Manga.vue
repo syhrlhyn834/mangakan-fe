@@ -84,7 +84,7 @@ import FilterSearch from '@/components/FilterSearch.vue';
 export default {
   head() {
   return {
-    title: 'Semua Manga',
+    title: 'Beranda',
   };
 },
   filters: {
