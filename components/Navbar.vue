@@ -58,17 +58,14 @@
             <li class="mb-4"><nuxt-link @click.native="closeMenu" class="flex items-center text-white hover:bg-[#ff6740] p-2 rounded" to="/character"><i class="fas fa-user-friends mr-2"></i> Characters</nuxt-link></li>
           </ul>
         </div>
-        <div class="absolute bottom-0 w-full p-4 text-gray-500 text-sm">
-          <div class="flex items-center">
-            <span class="text-white"><i class="fa fa-copyright text-white" aria-hidden="true"></i> Syahril Haryono</span>
-          </div>
-        </div>
+        <Footer />
       </div>
     </transition>
   </div>
 </template>
 
 <script>
+import Footer from './Footer.vue';
 export default {
   name: 'Navbar',
   props: {
